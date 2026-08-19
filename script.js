@@ -7,6 +7,19 @@
   var emptyQuery = document.getElementById('empty-query');
   var activeCat = 'all';
 
+  // keep the "N bite-size games" copy in sync with the actual number of cards
+  var totalGames = cards.length;
+  var gameCountEl = document.getElementById('game-count');
+  if (gameCountEl) gameCountEl.textContent = totalGames;
+
+  var descriptionMeta = document.getElementById('page-description');
+  if (descriptionMeta){
+    descriptionMeta.setAttribute(
+      'content',
+      totalGames + ' bite-size browser games. No installs, no accounts — pick one and press start.'
+    );
+  }
+
   // populate category counts once on load
   pills.forEach(function(pill){
     var cat = pill.dataset.cat;
