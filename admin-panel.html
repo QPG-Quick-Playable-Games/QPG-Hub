@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel — QPG Arcade</title>
+<link rel="stylesheet" href="style.css">
+<link rel="icon" type="image/png" href="/QPG%20Logo.png">
+<style>
+  .admin-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 40px;
+    background: var(--bg);
+    min-height: 80vh;
+  }
+
+  .admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 20px;
+  }
+
+  .admin-header h1 {
+    font-family: var(--font-display);
+    font-size: 28px;
+    color: var(--cyan);
+  }
+
+  .logout-btn {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: .03em;
+    color: #ff3f8e;
+    background: transparent;
+    border: 1px solid #ff3f8e;
+    border-radius: 8px;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: background .15s;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  .logout-btn:hover {
+    background: rgba(255,63,142,.1);
+  }
+
+  .login-page {
+    display: none;
+    text-align: center;
+    padding: 60px 20px;
+  }
+
+  .login-page.show {
+    display: block;
+  }
+
+  .login-form {
+    max-width: 400px;
+    margin: 0 auto;
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 40px;
+  }
+
+  .login-form h2 {
+    font-family: var(--font-display);
+    font-size: 24px;
+    color: var(--ink);
+    margin-bottom: 24px;
+  }
+
+  .login-form input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 16px;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 14px;
+  }
+
+  .login-form input:focus {
+    outline: none;
+    border-color: var(--cyan);
+    box-shadow: 0 0 0 3px rgba(78,232,255,.15);
+  }
+
+  .login-form button {
+    width: 100%;
+    padding: 12px;
+    background: var(--cyan);
+    color: var(--bg);
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-family: var(--font-mono);
+    cursor: pointer;
+    text-transform: uppercase;
+    font-size: 12px;
+  }
+
+  .login-form button:hover {
+    background: #2dd4d4;
+  }
+
+  .dashboard-page {
+    display: none;
+  }
+
+  .dashboard-page.show {
+    display: block;
+  }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+
+  .stat-card {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .stat-card h3 {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: .08em;
+    color: var(--cyan);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .stat-card .number {
+    font-family: var(--font-display);
+    font-size: 32px;
+    color: var(--ink);
+    font-weight: 700;
+  }
+
+  .submissions-container {
+    display: grid;
+    gap: 20px;
+  }
+
+  .submission-card {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 24px;
+    transition: border-color .15s;
+  }
+
+  .submission-card:hover {
+    border-color: var(--cyan);
+  }
+
+  .submission-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
+  }
+
+  .submission-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .submission-title h3 {
+    font-family: var(--font-display);
+    font-size: 20px;
+    color: var(--ink);
+  }
+
+  .game-emoji {
+    font-size: 24px;
+  }
+
+  .submission-status {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: .03em;
+    background: rgba(78,232,255,.1);
+    color: var(--cyan);
+    padding: 6px 12px;
+    border-radius: 6px;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  .submission-meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin-bottom: 16px;
+    font-size: 13px;
+  }
+
+  .meta-item {
+    color: var(--ink-muted);
+  }
+
+  .meta-item strong {
+    color: var(--ink);
+    display: block;
+    font-size: 12px;
+    font-family: var(--font-mono);
+    letter-spacing: .03em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 4px;
+  }
+
+  .submission-content {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+
+  .submission-content p {
+    color: var(--ink-muted);
+    font-size: 13px;
+    line-height: 1.6;
+    margin-bottom: 12px;
+  }
+
+  .submission-content label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    display: block;
+    margin-top: 12px;
+    margin-bottom: 4px;
+  }
+
+  .code-preview {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 12px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-muted);
+    max-height: 200px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+  .btn {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: .03em;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background .15s;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  .btn-approve {
+    background: var(--cyan);
+    color: var(--bg);
+    flex: 1;
+  }
+
+  .btn-approve:hover {
+    background: #2dd4d4;
+  }
+
+  .btn-decline {
+    background: #ff3f8e;
+    color: white;
+    flex: 1;
+  }
+
+  .btn-decline:hover {
+    background: #e63877;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--ink-muted);
+  }
+
+  .empty-state h2 {
+    font-family: var(--font-display);
+    font-size: 24px;
+    color: var(--ink);
+    margin-bottom: 12px;
+  }
+
+  @media (max-width: 768px) {
+    .admin-header {
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .submission-header {
+      flex-direction: column;
+    }
+
+    .action-buttons {
+      flex-direction: column;
+    }
+  }
+</style>
+</head>
+<body style="background: var(--bg);">
+
+<header class="hero" style="margin-bottom: 0;">
+  <div class="marquee">
+    <img src="QPG%20Logo.png" alt="QPG logo" class="logo">
+    <div class="title-block">
+      <p class="eyebrow">Quick&nbsp;Playable&nbsp;Games</p>
+      <h1>ADMIN PANEL</h1>
+      <p class="tagline">Review & Manage Game Submissions</p>
+    </div>
+  </div>
+</header>
+
+<div class="admin-container">
+  
+  <!-- Login Page -->
+  <div id="loginPage" class="login-page show">
+    <div class="login-form">
+      <h2>Admin Login</h2>
+      <input type="password" id="adminPassword" placeholder="Enter admin password" />
+      <button onclick="loginAdmin()">Login</button>
+      <p style="margin-top: 16px; color: var(--ink-muted); font-size: 12px;">Password has been shared with team leads</p>
+    </div>
+  </div>
+
+  <!-- Dashboard Page -->
+  <div id="dashboardPage" class="dashboard-page">
+    <div class="admin-header">
+      <h1>📊 Submission Dashboard</h1>
+      <button class="logout-btn" onclick="logoutAdmin()">Logout</button>
+    </div>
+
+    <div class="stats">
+      <div class="stat-card">
+        <h3>Pending</h3>
+        <div class="number" id="statPending">0</div>
+      </div>
+      <div class="stat-card">
+        <h3>Approved</h3>
+        <div class="number" id="statApproved">0</div>
+      </div>
+      <div class="stat-card">
+        <h3>Declined</h3>
+        <div class="number" id="statDeclined">0</div>
+      </div>
+      <div class="stat-card">
+        <h3>Total</h3>
+        <div class="number" id="statTotal">0</div>
+      </div>
+    </div>
+
+    <h2 style="font-family: var(--font-display); font-size: 20px; color: var(--ink); margin-bottom: 20px;">📋 Pending Submissions</h2>
+    
+    <div id="submissionsContainer" class="submissions-container">
+      <div class="empty-state">
+        <h2>No submissions yet</h2>
+        <p>When users submit games, they'll appear here for review.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p>Made with ❤️ using HTML, CSS & JavaScript</p>
+</footer>
+
+<script>
+  const ADMIN_PASSWORD = 'QPG2024Admin'; // Change this to a secure password
+  let allSubmissions = [];
+
+  // Check if logged in
+  function checkLogin() {
+    if (localStorage.getItem('qpgAdminLoggedIn') === 'true') {
+      showDashboard();
+    }
+  }
+
+  function loginAdmin() {
+    const password = document.getElementById('adminPassword').value;
+    if (password === ADMIN_PASSWORD) {
+      localStorage.setItem('qpgAdminLoggedIn', 'true');
+      document.getElementById('adminPassword').value = '';
+      showDashboard();
+    } else {
+      alert('Incorrect password');
+    }
+  }
+
+  function logoutAdmin() {
+    localStorage.removeItem('qpgAdminLoggedIn');
+    document.getElementById('loginPage').classList.add('show');
+    document.getElementById('dashboardPage').classList.remove('show');
+  }
+
+  function showDashboard() {
+    document.getElementById('loginPage').classList.remove('show');
+    document.getElementById('dashboardPage').classList.add('show');
+    loadSubmissions();
+  }
+
+  function loadSubmissions() {
+    allSubmissions = JSON.parse(localStorage.getItem('qpgSubmissions')) || [];
+    renderSubmissions();
+    updateStats();
+  }
+
+  function updateStats() {
+    const pending = allSubmissions.filter(s => s.status === 'pending').length;
+    const approved = allSubmissions.filter(s => s.status === 'approved').length;
+    const declined = allSubmissions.filter(s => s.status === 'declined').length;
+    
+    document.getElementById('statPending').textContent = pending;
+    document.getElementById('statApproved').textContent = approved;
+    document.getElementById('statDeclined').textContent = declined;
+    document.getElementById('statTotal').textContent = allSubmissions.length;
+  }
+
+  function renderSubmissions() {
+    const pendingSubmissions = allSubmissions.filter(s => s.status === 'pending');
+    const container = document.getElementById('submissionsContainer');
+
+    if (pendingSubmissions.length === 0) {
+      container.innerHTML = `
+        <div class="empty-state">
+          <h2>✅ All caught up!</h2>
+          <p>No pending submissions. Check back soon!</p>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = pendingSubmissions.map(submission => `
+      <div class="submission-card">
+        <div class="submission-header">
+          <div class="submission-title">
+            <span class="game-emoji">${submission.gameEmoji}</span>
+            <div>
+              <h3>${submission.gameName}</h3>
+              <p style="color: var(--ink-muted); font-size: 12px; margin-top: 4px;">by ${submission.userName}</p>
+            </div>
+          </div>
+          <div class="submission-status">Pending Review</div>
+        </div>
+
+        <div class="submission-meta">
+          <div class="meta-item">
+            <strong>Category</strong>
+            ${submission.gameCategory}
+          </div>
+          <div class="meta-item">
+            <strong>Email</strong>
+            <a href="mailto:${submission.userEmail}" style="color: var(--cyan); text-decoration: none;">${submission.userEmail}</a>
+          </div>
+          <div class="meta-item">
+            <strong>Game Link</strong>
+            <a href="${submission.gameLink}" target="_blank" style="color: var(--cyan); text-decoration: none;">View Game ↗</a>
+          </div>
+          <div class="meta-item">
+            <strong>GitHub</strong>
+            ${submission.userGithub ? `<a href="${submission.userGithub}" target="_blank" style="color: var(--cyan); text-decoration: none;">Profile ↗</a>` : 'Not provided'}
+          </div>
+        </div>
+
+        <div class="submission-content">
+          <label>Description</label>
+          <p>${submission.gameDescription}</p>
+          
+          <label>Game Code Preview</label>
+          <div class="code-preview">${submission.gameCode.substring(0, 500)}${submission.gameCode.length > 500 ? '...' : ''}</div>
+        </div>
+
+        <div class="action-buttons">
+          <button class="btn btn-approve" onclick="approveSubmission('${submission.id}', '${submission.userName}', '${submission.userEmail}')">✓ Approve</button>
+          <button class="btn btn-decline" onclick="declineSubmission('${submission.id}', '${submission.userName}', '${submission.userEmail}')">✗ Decline</button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function approveSubmission(id, userName, userEmail) {
+    const submission = allSubmissions.find(s => s.id === id);
+    if (!submission) return;
+
+    // Update status
+    submission.status = 'approved';
+    submission.approvedAt = new Date().toISOString();
+
+    // Save to localStorage
+    localStorage.setItem('qpgSubmissions', JSON.stringify(allSubmissions));
+
+    // Send approval email
+    sendApprovalEmail(userEmail, userName, submission);
+
+    // Add to index.html (you'll need to implement this)
+    addGameToHub(submission);
+
+    alert(`✅ Game approved! Email sent to ${userEmail}`);
+    loadSubmissions();
+  }
+
+  function declineSubmission(id, userName, userEmail) {
+    const reason = prompt('Enter decline reason (optional):');
+    const submission = allSubmissions.find(s => s.id === id);
+    if (!submission) return;
+
+    // Update status
+    submission.status = 'declined';
+    submission.declineReason = reason || 'Game did not meet quality standards';
+    submission.declinedAt = new Date().toISOString();
+
+    // Save to localStorage
+    localStorage.setItem('qpgSubmissions', JSON.stringify(allSubmissions));
+
+    // Send decline email
+    sendDeclineEmail(userEmail, userName, submission.declineReason);
+
+    alert(`❌ Game declined! Email sent to ${userEmail}`);
+    loadSubmissions();
+  }
+
+  function sendApprovalEmail(toEmail, userName, submission) {
+    // In production, use EmailJS or backend
+    console.log('Approval email would be sent to:', toEmail);
+    console.log('Message:', `Your game "${submission.gameName}" has been approved and is now live on QPG Arcade!`);
+  }
+
+  function sendDeclineEmail(toEmail, userName, reason) {
+    // In production, use EmailJS or backend
+    console.log('Decline email would be sent to:', toEmail);
+    console.log('Reason:', reason);
+  }
+
+  function addGameToHub(submission) {
+    // This function would add the approved game to index.html
+    // For now, just log it
+    console.log('Add game to hub:', submission.gameName);
+    
+    // The game data to add:
+    const gameCard = {
+      category: submission.gameCategory,
+      name: submission.gameName,
+      emoji: submission.gameEmoji,
+      description: submission.gameDescription,
+      link: submission.gameLink,
+      creator: submission.userName,
+      githubProfile: submission.userGithub
+    };
+    
+    console.log('Game card data:', gameCard);
+    alert(`📝 Note: To add "${submission.gameName}" to the hub, add this to index.html:\n\n<a class="card" data-cat="${submission.gameCategory}" ... >\n  <span class="icon">${submission.gameEmoji}</span>\n  <h2>${submission.gameName}</h2>\n  <p>${submission.gameDescription}</p>\n</a>`);
+  }
+
+  // Initialize on page load
+  checkLogin();
+</script>
+
+</body>
+</html>
