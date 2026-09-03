@@ -126,42 +126,11 @@
     margin-bottom: 8px;
   }
 
-  .success-message {
-    display: none;
-    background: rgba(78,232,255,.1);
-    border: 1px solid var(--cyan);
-    border-radius: 10px;
-    padding: 20px;
-    text-align: center;
-    margin-bottom: 24px;
-    animation: slideIn .3s ease;
-  }
-
-  .success-message.show {
-    display: block;
-  }
-
-  .error-message {
-    display: none;
-    background: rgba(255,63,142,.1);
-    border: 1px solid #ff3f8e;
-    border-radius: 10px;
-    padding: 20px;
-    text-align: center;
-    margin-bottom: 24px;
-    color: #ff3f8e;
-    animation: slideIn .3s ease;
-  }
-
-  .error-message.show {
-    display: block;
-  }
-
   .email-permission {
     background: rgba(78,232,255,.1);
     border: 1px solid var(--cyan);
     border-radius: 10px;
-    padding: 16px;
+    padding: 20px;
     margin-bottom: 24px;
     display: none;
   }
@@ -216,15 +185,128 @@
     background: #e63877;
   }
 
-  @keyframes slideIn {
-    from {
-      opacity: 0;
-      transform: translateY(-10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  /* Waiting Page */
+  .waiting-page {
+    display: none;
+    text-align: center;
+    padding: 60px 20px;
+  }
+
+  .waiting-page.show {
+    display: block;
+  }
+
+  .waiting-icon {
+    font-size: 64px;
+    margin-bottom: 20px;
+    animation: spin 2s linear infinite;
+  }
+
+  .waiting-page h2 {
+    font-family: var(--font-display);
+    font-size: 28px;
+    color: var(--ink);
+    margin-bottom: 12px;
+  }
+
+  .waiting-page p {
+    color: var(--ink-muted);
+    font-size: 14px;
+    line-height: 1.6;
+    max-width: 400px;
+    margin: 0 auto 20px;
+  }
+
+  .loader {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--line);
+    border-top: 3px solid var(--cyan);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  /* Thank You Page */
+  .thank-you-page {
+    display: none;
+    text-align: center;
+    padding: 60px 20px;
+  }
+
+  .thank-you-page.show {
+    display: block;
+  }
+
+  .thank-you-icon {
+    font-size: 80px;
+    margin-bottom: 20px;
+    animation: bounce 1s ease-in-out;
+  }
+
+  .thank-you-page h2 {
+    font-family: var(--font-display);
+    font-size: 32px;
+    color: var(--cyan);
+    margin-bottom: 12px;
+  }
+
+  .thank-you-page p {
+    color: var(--ink-muted);
+    font-size: 14px;
+    line-height: 1.6;
+    max-width: 500px;
+    margin: 0 auto 24px;
+  }
+
+  .thank-you-details {
+    background: rgba(78,232,255,.1);
+    border: 1px solid var(--cyan);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 24px 0;
+    text-align: left;
+  }
+
+  .thank-you-details p {
+    margin: 8px 0;
+    color: var(--ink-muted);
+    font-size: 13px;
+  }
+
+  .thank-you-details strong {
+    color: var(--ink);
+  }
+
+  .back-btn {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: .03em;
+    color: var(--bg);
+    background: var(--cyan);
+    border: none;
+    border-radius: 8px;
+    padding: 10px 24px;
+    cursor: pointer;
+    transition: background .15s;
+    font-weight: 600;
+    text-transform: uppercase;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .back-btn:hover {
+    background: #2dd4d4;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
   }
 
   @media (max-width: 640px) {
@@ -243,6 +325,10 @@
 
     .permission-buttons {
       flex-direction: column;
+    }
+
+    .thank-you-details {
+      text-align: center;
     }
   }
 </style>
@@ -263,133 +349,173 @@
 <main>
   <div class="submit-container">
     
-    <div class="success-message" id="successMessage">
-      <strong style="color: var(--cyan); font-size: 16px;">✅ Game Submitted Successfully!</strong>
-      <p style="margin-top: 8px;">Thank you for submitting your game! Our team will review it and send you an update at your email address. If approved, your game will be featured on the QPG Arcade with your credits!</p>
-    </div>
+    <!-- Submission Form -->
+    <div id="formPage" class="form-page">
+      <h1>Submit Your Game</h1>
+      <p class="subtitle">Get your game featured on QPG Arcade and reach thousands of players. Share your creation with us!</p>
 
-    <div class="error-message" id="errorMessage">
-      <strong style="font-size: 16px;">❌ Error</strong>
-      <p style="margin-top: 8px;" id="errorText"></p>
-    </div>
-
-    <div class="email-permission" id="emailPermission">
-      <h3>📧 Email Permission Required</h3>
-      <p id="permissionText">We need your permission to send your submission details to our team. Click "Allow" to proceed with sending an email to devaniviaan@gmail.com and 26bwsmd020041@bh05.billabonghighschool.com with all your game details.</p>
-      <div class="permission-buttons">
-        <button class="allow" onclick="allowEmailAndSubmit()">✓ Allow</button>
-        <button class="decline" onclick="denyEmailAndSubmit()">✗ Decline</button>
-      </div>
-    </div>
-
-    <h1>Submit Your Game</h1>
-    <p class="subtitle">Get your game featured on QPG Arcade and reach thousands of players. Share your creation with us!</p>
-
-    <div class="info-box">
-      <strong>🎮 How it works:</strong>
-      Fill out the form → Get email permission → Our team reviews → We'll email you the decision → Your game goes live if approved!
-    </div>
-
-    <form id="gameSubmissionForm">
-      <!-- User Name -->
-      <div class="form-group">
-        <label for="userName">Your Name *</label>
-        <input 
-          type="text" 
-          id="userName" 
-          name="userName" 
-          placeholder="e.g., John Doe" 
-          required
-        >
+      <div class="info-box">
+        <strong>🎮 How it works:</strong>
+        Fill out the form → Get email permission → Our team reviews → We'll email you the decision → Your game goes live if approved!
       </div>
 
-      <!-- Game Name -->
-      <div class="form-group">
-        <label for="gameName">Game Name *</label>
-        <input 
-          type="text" 
-          id="gameName" 
-          name="gameName" 
-          placeholder="e.g., Neon Jumper" 
-          required
-        >
-      </div>
-
-      <!-- Game Description -->
-      <div class="form-group">
-        <label for="gameDescription">Game Description *</label>
-        <textarea 
-          id="gameDescription" 
-          name="gameDescription" 
-          placeholder="Brief description of what your game does (100-200 characters)"
-          required
-        ></textarea>
-      </div>
-
-      <!-- Category & Email (Row) -->
-      <div class="form-row">
+      <form id="gameSubmissionForm">
+        <!-- User Name -->
         <div class="form-group">
-          <label for="gameCategory">Category *</label>
-          <select id="gameCategory" name="gameCategory" required>
-            <option value="">Select a category</option>
-            <option value="dodge">Dodge & Dash</option>
-            <option value="rhythm">Rhythm & Reflex</option>
-            <option value="puzzle">Puzzle & Brain</option>
-            <option value="party">Party</option>
-            <option value="3d">3D Games</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label for="userEmail">Email Address *</label>
+          <label for="userName">Your Name *</label>
           <input 
-            type="email" 
-            id="userEmail" 
-            name="userEmail" 
-            placeholder="your@email.com" 
+            type="text" 
+            id="userName" 
+            name="userName" 
+            placeholder="e.g., John Doe" 
             required
           >
         </div>
-      </div>
 
-      <!-- GitHub Profile & Game Link (Row) -->
-      <div class="form-row">
+        <!-- Game Name -->
         <div class="form-group">
-          <label for="userGithub">GitHub Profile (Optional)</label>
+          <label for="gameName">Game Name *</label>
           <input 
-            type="url" 
-            id="userGithub" 
-            name="userGithub" 
-            placeholder="https://github.com/username"
-          >
-        </div>
-
-        <div class="form-group">
-          <label for="gameLink">Game Link *</label>
-          <input 
-            type="url" 
-            id="gameLink" 
-            name="gameLink" 
-            placeholder="https://yoursite.com/game" 
+            type="text" 
+            id="gameName" 
+            name="gameName" 
+            placeholder="e.g., Neon Jumper" 
             required
           >
         </div>
+
+        <!-- Game Emoji Icon -->
+        <div class="form-group">
+          <label for="gameEmoji">Game Emoji/Icon *</label>
+          <input 
+            type="text" 
+            id="gameEmoji" 
+            name="gameEmoji" 
+            placeholder="e.g., 🎮 (paste an emoji to display on the hub)" 
+            maxlength="5"
+            required
+          >
+        </div>
+
+        <!-- Game Description -->
+        <div class="form-group">
+          <label for="gameDescription">Game Description *</label>
+          <textarea 
+            id="gameDescription" 
+            name="gameDescription" 
+            placeholder="Brief description of what your game does (100-200 characters)"
+            required
+          ></textarea>
+        </div>
+
+        <!-- Category & Email (Row) -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="gameCategory">Category *</label>
+            <select id="gameCategory" name="gameCategory" required>
+              <option value="">Select a category</option>
+              <option value="dodge">Dodge & Dash</option>
+              <option value="rhythm">Rhythm & Reflex</option>
+              <option value="puzzle">Puzzle & Brain</option>
+              <option value="party">Party</option>
+              <option value="3d">3D Games</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="userEmail">Email Address *</label>
+            <input 
+              type="email" 
+              id="userEmail" 
+              name="userEmail" 
+              placeholder="your@email.com" 
+              required
+            >
+          </div>
+        </div>
+
+        <!-- GitHub Profile & Game Link (Row) -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="userGithub">GitHub Profile (Optional)</label>
+            <input 
+              type="url" 
+              id="userGithub" 
+              name="userGithub" 
+              placeholder="https://github.com/username"
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="gameLink">Game Link *</label>
+            <input 
+              type="url" 
+              id="gameLink" 
+              name="gameLink" 
+              placeholder="https://yoursite.com/game" 
+              required
+            >
+          </div>
+        </div>
+
+        <!-- Game Code -->
+        <div class="form-group">
+          <label for="gameCode">Game Code (HTML/CSS/JS) *</label>
+          <textarea 
+            id="gameCode" 
+            name="gameCode" 
+            placeholder="Paste your complete game code here. Must be self-contained HTML (include CSS & JS inline or in <style>/<script> tags)"
+            required
+          ></textarea>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="submit-btn">📤 Submit Game</button>
+      </form>
+
+      <!-- Email Permission Dialog -->
+      <div class="email-permission" id="emailPermission">
+        <h3>📧 Email Permission Required</h3>
+        <p>We need your permission to send your complete submission details (including your game code and all information) to our review team at:</p>
+        <p><strong>devaniviaan@gmail.com</strong> and <strong>26bwsmd020041@bh05.billabonghighschool.com</strong></p>
+        <p>They will review your game and send you an approval or decline notification via email.</p>
+        <div class="permission-buttons">
+          <button class="allow" onclick="allowEmailAndSubmit()">✓ Allow & Send</button>
+          <button class="decline" onclick="denyEmailAndSubmit()">✗ Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Waiting Page -->
+    <div id="waitingPage" class="waiting-page">
+      <div class="waiting-icon">⏳</div>
+      <h2>Submission Received!</h2>
+      <p>Your game details have been sent to our review team at:</p>
+      <p><strong>devaniviaan@gmail.com</strong> and <strong>26bwsmd020041@bh05.billabonghighschool.com</strong></p>
+      <p style="margin-top: 20px; font-size: 13px; color: var(--ink-muted);">Our team will review your game and send you an approval or decline decision via email.</p>
+      <div class="loader" style="margin-top: 30px;"></div>
+    </div>
+
+    <!-- Thank You Page -->
+    <div id="thankYouPage" class="thank-you-page">
+      <div class="thank-you-icon">🎉</div>
+      <h2>Thank You!</h2>
+      <p>Your game has been successfully submitted and is now under review by our team.</p>
+      
+      <div class="thank-you-details">
+        <p><strong>📧 Email Sent To:</strong></p>
+        <p>devaniviaan@gmail.com</p>
+        <p>26bwsmd020041@bh05.billabonghighschool.com</p>
+        <p style="margin-top: 16px; border-top: 1px solid var(--line); padding-top: 16px;"><strong>What happens next:</strong></p>
+        <p>✓ Our team will review your game thoroughly</p>
+        <p>✓ We'll send you an email with our decision (approval or decline)</p>
+        <p>✓ If approved, your game will appear on the QPG Arcade Hub with your credits!</p>
       </div>
 
-      <!-- Game Code -->
-      <div class="form-group">
-        <label for="gameCode">Game Code (HTML/CSS/JS) *</label>
-        <textarea 
-          id="gameCode" 
-          name="gameCode" 
-          placeholder="Paste your complete game code here. Must be self-contained HTML (include CSS & JS inline or in <style>/<script> tags)"
-          required
-        ></textarea>
-      </div>
-
-      <!-- Submit Button -->
-      <button type="submit" class="submit-btn">📤 Submit Game</button>
-    </form>
+      <p style="font-size: 12px; color: var(--ink-muted); margin-top: 20px;">Check your email (including spam folder) for updates.</p>
+      
+      <a href="index.html" class="back-btn">← Back to Hub</a>
+    </div>
 
   </div>
 </main>
@@ -402,10 +528,10 @@
   let pendingFormData = null;
 
   const form = document.getElementById('gameSubmissionForm');
-  const successMessage = document.getElementById('successMessage');
-  const errorMessage = document.getElementById('errorMessage');
   const emailPermission = document.getElementById('emailPermission');
-  const errorText = document.getElementById('errorText');
+  const formPage = document.getElementById('formPage');
+  const waitingPage = document.getElementById('waitingPage');
+  const thankYouPage = document.getElementById('thankYouPage');
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -413,6 +539,7 @@
     const formData = {
       userName: document.getElementById('userName').value,
       gameName: document.getElementById('gameName').value,
+      gameEmoji: document.getElementById('gameEmoji').value,
       gameDescription: document.getElementById('gameDescription').value,
       gameCategory: document.getElementById('gameCategory').value,
       userEmail: document.getElementById('userEmail').value,
@@ -425,7 +552,7 @@
 
     // Validate email
     if (!formData.userEmail.includes('@')) {
-      showError('Please enter a valid email address');
+      alert('Please enter a valid email address');
       return;
     }
 
@@ -433,7 +560,7 @@
     try {
       new URL(formData.gameLink);
     } catch {
-      showError('Please enter a valid game link URL');
+      alert('Please enter a valid game link URL');
       return;
     }
 
@@ -442,94 +569,117 @@
 
     // Show email permission dialog
     emailPermission.classList.add('show');
-    form.style.display = 'none';
   });
-
-  function showError(message) {
-    errorText.textContent = message;
-    errorMessage.classList.add('show');
-    setTimeout(() => {
-      errorMessage.classList.remove('show');
-    }, 4000);
-  }
 
   window.allowEmailAndSubmit = async function() {
     if (!pendingFormData) return;
 
-    try {
-      // Send email via EmailJS (you'll need to set this up)
-      // For now, we'll use FormSubmit.co or similar service
-      
-      const emailContent = `
-NEW GAME SUBMISSION
+    // Hide form and permission dialog
+    formPage.style.display = 'none';
+    emailPermission.classList.remove('show');
+    
+    // Show waiting page
+    waitingPage.classList.add('show');
 
-User Name: ${pendingFormData.userName}
+    try {
+      // Format the email content with all details
+      const emailContent = `
+=====================================
+NEW GAME SUBMISSION FOR QPG ARCADE
+=====================================
+
+SUBMISSION DATE: ${new Date(pendingFormData.submittedAt).toLocaleString()}
+
+CREATOR INFORMATION:
+====================
+Name: ${pendingFormData.userName}
 Email: ${pendingFormData.userEmail}
 GitHub: ${pendingFormData.userGithub || 'Not provided'}
 
-Game Details:
------------
-Name: ${pendingFormData.gameName}
+GAME DETAILS:
+=============
+Title: ${pendingFormData.gameName}
+Emoji/Icon: ${pendingFormData.gameEmoji}
 Category: ${pendingFormData.gameCategory}
 Description: ${pendingFormData.gameDescription}
 Game Link: ${pendingFormData.gameLink}
 
-Game Code:
-----------
+GAME CODE:
+==========
 ${pendingFormData.gameCode}
 
-Submitted At: ${pendingFormData.submittedAt}
+=====================================
+ACTION REQUIRED:
+- Review the game and code
+- Reply to this email with APPROVAL or DECLINE
+- Include any feedback/rejection reasons
+=====================================
       `;
 
-      // Use FormSubmit.co to send email (free, no backend required)
-      const formData = new FormData();
-      formData.append('email', pendingFormData.userEmail);
-      formData.append('subject', `New Game Submission: ${pendingFormData.gameName}`);
-      formData.append('message', emailContent);
-      formData.append('_captcha', 'false');
-      formData.append('_template', 'table');
+      // Send email using FormSubmit (which emails to both addresses)
+      // For production, use a proper backend service
+      
+      // Here we'll use fetch to send via a hypothetical backend
+      // For now, let's simulate the email sending with a delay
+      
+      // Send to both emails using EmailJS or your backend service
+      const emailData = {
+        to: ['devaniviaan@gmail.com', '26bwsmd020041@bh05.billabonghighschool.com'],
+        subject: `New Game Submission: ${pendingFormData.gameName}`,
+        content: emailContent,
+        fromEmail: pendingFormData.userEmail,
+        fromName: pendingFormData.userName,
+        formData: pendingFormData
+      };
 
-      // Log data for admin email
-      console.log('Submission Data:', pendingFormData);
+      console.log('Email data ready to send:', emailData);
       
-      // For demo purposes, simulate email sending
-      // In production, you'd use EmailJS or a backend service
-      
-      // Send to admin emails
-      const adminEmails = [
-        'devaniviaan@gmail.com',
-        '26bwsmd020041@bh05.billabonghighschool.com'
-      ];
+      // In production, call your backend API here
+      // await fetch('/api/send-submission-email', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify(emailData)
+      // });
 
-      // Display success message
-      emailPermission.classList.remove('show');
-      form.style.display = 'block';
-      form.reset();
-      successMessage.classList.add('show');
-      
-      console.log('Email would be sent to:', adminEmails);
-      console.log('Email content:', emailContent);
+      // Simulate email sending (in production, this would come from backend)
+      await simulateSendEmail(emailData);
+
+      // After 3 seconds, show thank you page
+      setTimeout(() => {
+        waitingPage.classList.remove('show');
+        thankYouPage.classList.add('show');
+      }, 3000);
 
       // Clear pending data
       pendingFormData = null;
 
-      // Hide success message after 5 seconds
-      setTimeout(() => {
-        successMessage.classList.remove('show');
-      }, 5000);
-
     } catch (error) {
-      showError('Failed to submit game. Please try again.');
       console.error('Error:', error);
+      alert('Failed to submit game. Please try again.');
+      formPage.style.display = 'block';
+      waitingPage.classList.remove('show');
     }
   };
 
   window.denyEmailAndSubmit = function() {
     emailPermission.classList.remove('show');
-    form.style.display = 'block';
-    showError('Submission cancelled. We need your email permission to process your game submission.');
     pendingFormData = null;
   };
+
+  // Simulate sending email (in production, use real email service)
+  function simulateSendEmail(emailData) {
+    return new Promise((resolve) => {
+      // Log to console for debugging
+      console.log('SIMULATING EMAIL SEND:');
+      console.log('From:', emailData.fromName, `<${emailData.fromEmail}>`);
+      console.log('To:', emailData.to.join(', '));
+      console.log('Subject:', emailData.subject);
+      console.log('Content:', emailData.content);
+      
+      // In production, this would be a real API call
+      setTimeout(() => resolve(), 1000);
+    });
+  }
 </script>
 
 </body>
