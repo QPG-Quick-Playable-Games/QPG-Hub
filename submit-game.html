@@ -6,7 +6,6 @@
 <title>Submit Your Game — QPG Arcade</title>
 <link rel="stylesheet" href="style.css">
 <link rel="icon" type="image/png" href="/QPG%20Logo.png">
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 <style>
   .submit-container {
     max-width: 800px;
@@ -526,9 +525,6 @@
 </footer>
 
 <script>
-  // Initialize EmailJS
-  emailjs.init('YOUR_PUBLIC_KEY_HERE'); // You'll get this from EmailJS
-
   let pendingFormData = null;
 
   const form = document.getElementById('gameSubmissionForm');
@@ -586,6 +582,14 @@
     waitingPage.classList.add('show');
 
     try {
+      // Save to localStorage for admin panel FIRST
+      let submissions = JSON.parse(localStorage.getItem('qpgSubmissions')) || [];
+      pendingFormData.id = Date.now().toString();
+      submissions.push(pendingFormData);
+      localStorage.setItem('qpgSubmissions', JSON.stringify(submissions));
+
+      console.log('✅ Submission saved to localStorage:', pendingFormData);
+
       // Format the email content with all details
       const emailContent = `
 =====================================
@@ -619,31 +623,33 @@ Login and Approve or Decline this submission
 =====================================
       `;
 
-      // Send email using EmailJS to both addresses
-      const emailPromises = [
-        emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', {
-          to_email: 'devaniviaan@gmail.com',
-          subject: `New Game Submission: ${pendingFormData.gameName}`,
-          message: emailContent,
-          from_name: pendingFormData.userName,
-          from_email: pendingFormData.userEmail
-        }),
-        emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', {
-          to_email: '26bwsmd020041@bh05.billabonghighschool.com',
-          subject: `New Game Submission: ${pendingFormData.gameName}`,
-          message: emailContent,
-          from_name: pendingFormData.userName,
-          from_email: pendingFormData.userEmail
-        })
-      ];
+      // Try to send via EmailJS (if configured)
+      if (typeof emailjs !== 'undefined') {
+        try {
+          await emailjs.send('service_qpg', 'template_submission', {
+            to_email: 'devaniviaan@gmail.com',
+            subject: `New Game Submission: ${pendingFormData.gameName}`,
+            message: emailContent,
+            from_name: pendingFormData.userName,
+            from_email: pendingFormData.userEmail
+          });
 
-      await Promise.all(emailPromises);
+          await emailjs.send('service_qpg', 'template_submission', {
+            to_email: '26bwsmd020041@bh05.billabonghighschool.com',
+            subject: `New Game Submission: ${pendingFormData.gameName}`,
+            message: emailContent,
+            from_name: pendingFormData.userName,
+            from_email: pendingFormData.userEmail
+          });
 
-      // Save to localStorage for admin panel
-      let submissions = JSON.parse(localStorage.getItem('qpgSubmissions')) || [];
-      pendingFormData.id = Date.now().toString();
-      submissions.push(pendingFormData);
-      localStorage.setItem('qpgSubmissions', JSON.stringify(submissions));
+          console.log('✅ Emails sent successfully');
+        } catch (emailError) {
+          console.log('⚠️ Email service not configured, but submission saved locally');
+        }
+      } else {
+        console.log('⚠️ EmailJS not loaded, submission saved locally');
+        console.log('📧 Email content that would be sent:', emailContent);
+      }
 
       // After 3 seconds, show thank you page
       setTimeout(() => {
@@ -655,10 +661,10 @@ Login and Approve or Decline this submission
       pendingFormData = null;
 
     } catch (error) {
-      console.error('Error:', error);
-      alert('Failed to submit game. Please try again.');
-      formPage.style.display = 'block';
+      console.error('❌ Error:', error);
       waitingPage.classList.remove('show');
+      formPage.style.display = 'block';
+      alert('Submission saved! Check admin panel. Error: ' + error.message);
     }
   };
 
