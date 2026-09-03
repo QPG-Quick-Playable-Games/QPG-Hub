@@ -6,6 +6,7 @@
 <title>Submit Your Game — QPG Arcade</title>
 <link rel="stylesheet" href="style.css">
 <link rel="icon" type="image/png" href="/QPG%20Logo.png">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 <style>
   .submit-container {
     max-width: 800px;
@@ -480,8 +481,8 @@
         <p><strong>devaniviaan@gmail.com</strong> and <strong>26bwsmd020041@bh05.billabonghighschool.com</strong></p>
         <p>They will review your game and send you an approval or decline notification via email.</p>
         <div class="permission-buttons">
-          <button class="allow" onclick="allowEmailAndSubmit()">✓ Allow & Send</button>
-          <button class="decline" onclick="denyEmailAndSubmit()">✗ Cancel</button>
+          <button type="button" class="allow" onclick="allowEmailAndSubmit()">✓ Allow & Send</button>
+          <button type="button" class="decline" onclick="denyEmailAndSubmit()">✗ Cancel</button>
         </div>
       </div>
     </div>
@@ -525,6 +526,9 @@
 </footer>
 
 <script>
+  // Initialize EmailJS
+  emailjs.init('YOUR_PUBLIC_KEY_HERE'); // You'll get this from EmailJS
+
   let pendingFormData = null;
 
   const form = document.getElementById('gameSubmissionForm');
@@ -610,39 +614,36 @@ ${pendingFormData.gameCode}
 
 =====================================
 ACTION REQUIRED:
-- Review the game and code
-- Reply to this email with APPROVAL or DECLINE
-- Include any feedback/rejection reasons
+Visit: https://qpg-quick-playable-games.github.io/QPG-Hub/admin-panel.html
+Login and Approve or Decline this submission
 =====================================
       `;
 
-      // Send email using FormSubmit (which emails to both addresses)
-      // For production, use a proper backend service
-      
-      // Here we'll use fetch to send via a hypothetical backend
-      // For now, let's simulate the email sending with a delay
-      
-      // Send to both emails using EmailJS or your backend service
-      const emailData = {
-        to: ['devaniviaan@gmail.com', '26bwsmd020041@bh05.billabonghighschool.com'],
-        subject: `New Game Submission: ${pendingFormData.gameName}`,
-        content: emailContent,
-        fromEmail: pendingFormData.userEmail,
-        fromName: pendingFormData.userName,
-        formData: pendingFormData
-      };
+      // Send email using EmailJS to both addresses
+      const emailPromises = [
+        emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', {
+          to_email: 'devaniviaan@gmail.com',
+          subject: `New Game Submission: ${pendingFormData.gameName}`,
+          message: emailContent,
+          from_name: pendingFormData.userName,
+          from_email: pendingFormData.userEmail
+        }),
+        emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', {
+          to_email: '26bwsmd020041@bh05.billabonghighschool.com',
+          subject: `New Game Submission: ${pendingFormData.gameName}`,
+          message: emailContent,
+          from_name: pendingFormData.userName,
+          from_email: pendingFormData.userEmail
+        })
+      ];
 
-      console.log('Email data ready to send:', emailData);
-      
-      // In production, call your backend API here
-      // await fetch('/api/send-submission-email', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify(emailData)
-      // });
+      await Promise.all(emailPromises);
 
-      // Simulate email sending (in production, this would come from backend)
-      await simulateSendEmail(emailData);
+      // Save to localStorage for admin panel
+      let submissions = JSON.parse(localStorage.getItem('qpgSubmissions')) || [];
+      pendingFormData.id = Date.now().toString();
+      submissions.push(pendingFormData);
+      localStorage.setItem('qpgSubmissions', JSON.stringify(submissions));
 
       // After 3 seconds, show thank you page
       setTimeout(() => {
@@ -665,21 +666,6 @@ ACTION REQUIRED:
     emailPermission.classList.remove('show');
     pendingFormData = null;
   };
-
-  // Simulate sending email (in production, use real email service)
-  function simulateSendEmail(emailData) {
-    return new Promise((resolve) => {
-      // Log to console for debugging
-      console.log('SIMULATING EMAIL SEND:');
-      console.log('From:', emailData.fromName, `<${emailData.fromEmail}>`);
-      console.log('To:', emailData.to.join(', '));
-      console.log('Subject:', emailData.subject);
-      console.log('Content:', emailData.content);
-      
-      // In production, this would be a real API call
-      setTimeout(() => resolve(), 1000);
-    });
-  }
 </script>
 
 </body>
