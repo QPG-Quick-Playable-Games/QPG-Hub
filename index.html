@@ -29,7 +29,7 @@
 <main>
   <div class="controls">
     <label class="search-wrap">
-      <svg class="search-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><line x1="16.5" y1="16.5" x2="22" y2="22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <svg class="search-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><line x1="16.5" y1="16.5" x2="23" y2="23" stroke="currentColor" stroke-width="2"/></svg>
       <input id="search" type="text" placeholder="Search games…" autocomplete="off" aria-label="Search games">
     </label>
     <div class="filters" id="filters" role="group" aria-label="Filter by category">
@@ -221,7 +221,7 @@
       <p>Destroy the alien invaders and survive the waves! Multiple difficulty levels to challenge yourself.</p>
     </a>
 
-    <a class="card" data-cat="puzzle" data-search="guess the football legend trivia famous players legendary footballers soccer quiz" href="https://devaniviaan-cell.github.io/Guess-the-Football-Legend/">
+    <a class="card" data-cat="puzzle" data-search="guess the football legend trivia famous players legendary footballers soccer quiz" href="https://devaniviaan-cell.github.io/Guess-the-Football-L/">
       <span class="scanline" aria-hidden="true"></span>
       <span class="cat-tag">Puzzle &amp; Brain</span>
       <span class="icon">⚽</span>
@@ -322,10 +322,20 @@
   <p id="empty-state" class="empty-state" hidden>
     No games match "<span id="empty-query"></span>". Try a different search or category.
   </p>
+
+  <!-- Submit Your Game Section -->
+  <div style="margin: 60px 0 40px; padding-top: 40px; border-top: 1px solid var(--line); text-align: center;">
+    <h2 style="font-family: var(--font-display); font-size: 24px; color: var(--ink); margin-bottom: 12px;">Have Your Own Game?</h2>
+    <p style="color: var(--ink-muted); margin-bottom: 24px; font-size: 14px;">Share your creation with thousands of players on QPG Arcade!</p>
+    <a href="submit-game.html" class="pill" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; background: var(--cyan); color: var(--bg); font-weight: 600; padding: 12px 28px; border: none; border-radius: 10px; cursor: pointer; transition: background .15s; font-size: 14px;">
+      📤 Submit Your Game
+    </a>
+  </div>
+
 </main>
 
 <footer>
-  <p>Made with ❤️ using HTML, CSS &amp; JavaScript</p>
+  <p>Made with ❤️ using HTML, CSS & JavaScript</p>
 </footer>
 
 <script src="script.js"></script>
