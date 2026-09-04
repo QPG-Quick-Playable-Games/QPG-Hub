@@ -332,3 +332,10 @@ footer{
   .card:hover .scanline{ animation: none; opacity: .4; }
   .card:hover, .card:focus-visible{ transform: none; }
 }
+.qpg-creator{
+  font-size:11px !important;
+  color:var(--cyan) !important;
+  opacity:.85;
+  margin-top:auto;
+  font-family:var(--font-mono);
+}
