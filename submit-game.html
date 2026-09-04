@@ -6,333 +6,211 @@
 <title>Submit Your Game — QPG Arcade</title>
 <link rel="stylesheet" href="style.css">
 <link rel="icon" type="image/png" href="/QPG%20Logo.png">
+
 <style>
-  .submit-container {
-    max-width: 800px;
-    margin: 40px auto;
-    padding: 40px;
-    background: var(--bg-elev);
-    border: 1px solid var(--line);
-    border-radius: 16px;
-    box-shadow: 0 10px 24px rgba(0,0,0,.28);
+.submit-container{
+  max-width:850px;
+  margin:40px auto;
+  padding:40px;
+  background:var(--bg-elev);
+  border:1px solid var(--line);
+  border-radius:16px;
+  box-shadow:0 10px 24px rgba(0,0,0,.28);
+}
+
+.form-page h1{
+  font-family:var(--font-display);
+  font-size:32px;
+  margin-bottom:12px;
+}
+
+.subtitle{
+  color:var(--ink-muted);
+  margin-bottom:28px;
+  font-size:14px;
+}
+
+.form-group{
+  margin-bottom:20px;
+  display:flex;
+  flex-direction:column;
+}
+
+.form-group label{
+  font-family:var(--font-mono);
+  font-size:12px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--cyan);
+  margin-bottom:8px;
+  font-weight:600;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select{
+  font-family:var(--font-body);
+  font-size:14px;
+  color:var(--ink);
+  background:var(--bg);
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:12px 14px;
+  outline:none;
+}
+
+.form-group textarea{
+  resize:vertical;
+  min-height:120px;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus{
+  border-color:var(--cyan);
+  box-shadow:0 0 0 3px rgba(78,232,255,.15);
+}
+
+.form-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+}
+
+.info-box{
+  background:rgba(78,232,255,.08);
+  border:1px solid var(--cyan);
+  border-radius:10px;
+  padding:16px;
+  margin-bottom:25px;
+  color:var(--ink-muted);
+  font-size:13px;
+  line-height:1.6;
+}
+
+.info-box strong{
+  display:block;
+  color:var(--cyan);
+  margin-bottom:7px;
+}
+
+.consent{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  margin:20px 0;
+  color:var(--ink-muted);
+  font-size:13px;
+  line-height:1.5;
+}
+
+.consent input{
+  margin-top:3px;
+  width:16px;
+  height:16px;
+}
+
+.submit-btn{
+  width:100%;
+  padding:15px;
+  border:0;
+  border-radius:10px;
+  background:var(--cyan);
+  color:var(--bg);
+  font-family:var(--font-mono);
+  font-size:12px;
+  font-weight:700;
+  text-transform:uppercase;
+  cursor:pointer;
+}
+
+.submit-btn:disabled{
+  opacity:.55;
+  cursor:not-allowed;
+}
+
+.status-page{
+  display:none;
+  text-align:center;
+  padding:60px 20px;
+}
+
+.status-page.show{
+  display:block;
+}
+
+.status-icon{
+  font-size:70px;
+  margin-bottom:20px;
+}
+
+.status-page h2{
+  font-family:var(--font-display);
+  font-size:30px;
+  margin-bottom:15px;
+}
+
+.status-page p{
+  max-width:560px;
+  margin:8px auto;
+  color:var(--ink-muted);
+  line-height:1.6;
+  font-size:14px;
+}
+
+.submission-id{
+  display:inline-block;
+  margin-top:20px;
+  padding:9px 14px;
+  border:1px solid var(--line);
+  border-radius:8px;
+  background:var(--bg);
+  font-family:var(--font-mono);
+  color:var(--cyan);
+  font-size:12px;
+}
+
+.back-btn{
+  display:inline-block;
+  margin-top:25px;
+  padding:11px 22px;
+  border-radius:8px;
+  background:var(--cyan);
+  color:var(--bg);
+  text-decoration:none;
+  font-family:var(--font-mono);
+  font-size:12px;
+  font-weight:700;
+}
+
+.error-box{
+  display:none;
+  margin-bottom:20px;
+  padding:14px;
+  border:1px solid #ff3f8e;
+  border-radius:9px;
+  color:#ff8fbb;
+  background:rgba(255,63,142,.08);
+  font-size:13px;
+}
+
+.error-box.show{
+  display:block;
+}
+
+@media(max-width:640px){
+  .submit-container{
+    margin:20px;
+    padding:24px;
   }
 
-  .submit-container h1 {
-    font-family: var(--font-display);
-    font-size: 32px;
-    margin-bottom: 12px;
-    color: var(--ink);
+  .form-row{
+    grid-template-columns:1fr;
   }
-
-  .submit-container .subtitle {
-    color: var(--ink-muted);
-    margin-bottom: 32px;
-    font-size: 14px;
-  }
-
-  .form-group {
-    margin-bottom: 24px;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .form-group label {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    letter-spacing: .08em;
-    text-transform: uppercase;
-    color: var(--cyan);
-    margin-bottom: 8px;
-    font-weight: 600;
-  }
-
-  .form-group input,
-  .form-group textarea,
-  .form-group select {
-    font-family: var(--font-body);
-    font-size: 14px;
-    color: var(--ink);
-    background: var(--bg);
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    padding: 12px 14px;
-    outline: none;
-    transition: border-color .15s, box-shadow .15s;
-  }
-
-  .form-group textarea {
-    resize: vertical;
-    min-height: 120px;
-    font-family: var(--font-body);
-  }
-
-  .form-group input:focus,
-  .form-group textarea:focus,
-  .form-group select:focus {
-    border-color: var(--cyan);
-    box-shadow: 0 0 0 3px rgba(78,232,255,.15);
-  }
-
-  .form-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-  }
-
-  .submit-btn {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    letter-spacing: .03em;
-    color: var(--bg);
-    background: var(--cyan);
-    border: none;
-    border-radius: 10px;
-    padding: 14px 24px;
-    cursor: pointer;
-    transition: transform .15s, background .15s;
-    font-weight: 600;
-    text-transform: uppercase;
-    width: 100%;
-  }
-
-  .submit-btn:hover {
-    background: #2dd4d4;
-    transform: translateY(-2px);
-  }
-
-  .submit-btn:active {
-    transform: translateY(0);
-  }
-
-  .submit-btn:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
-
-  .info-box {
-    background: rgba(78,232,255,.1);
-    border: 1px solid var(--cyan);
-    border-radius: 10px;
-    padding: 16px;
-    margin-bottom: 24px;
-    font-size: 13px;
-    color: var(--ink-muted);
-    line-height: 1.6;
-  }
-
-  .info-box strong {
-    color: var(--cyan);
-    display: block;
-    margin-bottom: 8px;
-  }
-
-  .email-permission {
-    background: rgba(78,232,255,.1);
-    border: 1px solid var(--cyan);
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 24px;
-    display: none;
-  }
-
-  .email-permission.show {
-    display: block;
-  }
-
-  .email-permission h3 {
-    color: var(--cyan);
-    margin-bottom: 12px;
-    font-size: 14px;
-  }
-
-  .email-permission p {
-    color: var(--ink-muted);
-    font-size: 13px;
-    margin-bottom: 16px;
-  }
-
-  .permission-buttons {
-    display: flex;
-    gap: 12px;
-    justify-content: center;
-  }
-
-  .permission-buttons button {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: .03em;
-    color: var(--bg);
-    background: var(--cyan);
-    border: none;
-    border-radius: 8px;
-    padding: 10px 16px;
-    cursor: pointer;
-    transition: background .15s;
-    font-weight: 600;
-    text-transform: uppercase;
-  }
-
-  .permission-buttons button:hover {
-    background: #2dd4d4;
-  }
-
-  .permission-buttons button.decline {
-    background: #ff3f8e;
-    color: white;
-  }
-
-  .permission-buttons button.decline:hover {
-    background: #e63877;
-  }
-
-  /* Waiting Page */
-  .waiting-page {
-    display: none;
-    text-align: center;
-    padding: 60px 20px;
-  }
-
-  .waiting-page.show {
-    display: block;
-  }
-
-  .waiting-icon {
-    font-size: 64px;
-    margin-bottom: 20px;
-    animation: spin 2s linear infinite;
-  }
-
-  .waiting-page h2 {
-    font-family: var(--font-display);
-    font-size: 28px;
-    color: var(--ink);
-    margin-bottom: 12px;
-  }
-
-  .waiting-page p {
-    color: var(--ink-muted);
-    font-size: 14px;
-    line-height: 1.6;
-    max-width: 400px;
-    margin: 0 auto 20px;
-  }
-
-  .loader {
-    width: 40px;
-    height: 40px;
-    border: 3px solid var(--line);
-    border-top: 3px solid var(--cyan);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin: 0 auto;
-  }
-
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-
-  /* Thank You Page */
-  .thank-you-page {
-    display: none;
-    text-align: center;
-    padding: 60px 20px;
-  }
-
-  .thank-you-page.show {
-    display: block;
-  }
-
-  .thank-you-icon {
-    font-size: 80px;
-    margin-bottom: 20px;
-    animation: bounce 1s ease-in-out;
-  }
-
-  .thank-you-page h2 {
-    font-family: var(--font-display);
-    font-size: 32px;
-    color: var(--cyan);
-    margin-bottom: 12px;
-  }
-
-  .thank-you-page p {
-    color: var(--ink-muted);
-    font-size: 14px;
-    line-height: 1.6;
-    max-width: 500px;
-    margin: 0 auto 24px;
-  }
-
-  .thank-you-details {
-    background: rgba(78,232,255,.1);
-    border: 1px solid var(--cyan);
-    border-radius: 10px;
-    padding: 20px;
-    margin: 24px 0;
-    text-align: left;
-  }
-
-  .thank-you-details p {
-    margin: 8px 0;
-    color: var(--ink-muted);
-    font-size: 13px;
-  }
-
-  .thank-you-details strong {
-    color: var(--ink);
-  }
-
-  .back-btn {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    letter-spacing: .03em;
-    color: var(--bg);
-    background: var(--cyan);
-    border: none;
-    border-radius: 8px;
-    padding: 10px 24px;
-    cursor: pointer;
-    transition: background .15s;
-    font-weight: 600;
-    text-transform: uppercase;
-    text-decoration: none;
-    display: inline-block;
-  }
-
-  .back-btn:hover {
-    background: #2dd4d4;
-  }
-
-  @keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-  }
-
-  @media (max-width: 640px) {
-    .submit-container {
-      padding: 24px;
-      margin: 20px;
-    }
-
-    .form-row {
-      grid-template-columns: 1fr;
-    }
-
-    .submit-container h1 {
-      font-size: 24px;
-    }
-
-    .permission-buttons {
-      flex-direction: column;
-    }
-
-    .thank-you-details {
-      text-align: center;
-    }
-  }
+}
 </style>
 </head>
+
 <body>
 
 <header class="hero">
@@ -341,337 +219,525 @@
     <div class="title-block">
       <p class="eyebrow">Quick&nbsp;Playable&nbsp;Games</p>
       <h1>SUBMIT YOUR GAME</h1>
-      <p class="tagline">Share your creation with 1000s of players</p>
+      <p class="tagline">Share your creation with QPG</p>
     </div>
   </div>
 </header>
 
 <main>
-  <div class="submit-container">
-    
-    <!-- Submission Form -->
-    <div id="formPage" class="form-page">
-      <h1>Submit Your Game</h1>
-      <p class="subtitle">Get your game featured on QPG Arcade and reach thousands of players. Share your creation with us!</p>
 
-      <div class="info-box">
-        <strong>🎮 How it works:</strong>
-        Fill out the form → Get email permission → Our team reviews → We'll email you the decision → Your game goes live if approved!
-      </div>
+<div class="submit-container">
 
-      <form id="gameSubmissionForm">
-        <!-- User Name -->
-        <div class="form-group">
-          <label for="userName">Your Name *</label>
-          <input 
-            type="text" 
-            id="userName" 
-            name="userName" 
-            placeholder="e.g., John Doe" 
-            required
-          >
-        </div>
+<!-- ================= FORM ================= -->
 
-        <!-- Game Name -->
-        <div class="form-group">
-          <label for="gameName">Game Name *</label>
-          <input 
-            type="text" 
-            id="gameName" 
-            name="gameName" 
-            placeholder="e.g., Neon Jumper" 
-            required
-          >
-        </div>
+<div id="formPage" class="form-page">
 
-        <!-- Game Emoji Icon -->
-        <div class="form-group">
-          <label for="gameEmoji">Game Emoji/Icon *</label>
-          <input 
-            type="text" 
-            id="gameEmoji" 
-            name="gameEmoji" 
-            placeholder="e.g., 🎮 (paste an emoji to display on the hub)" 
-            maxlength="5"
-            required
-          >
-        </div>
+<h1>Submit Your Game</h1>
 
-        <!-- Game Description -->
-        <div class="form-group">
-          <label for="gameDescription">Game Description *</label>
-          <textarea 
-            id="gameDescription" 
-            name="gameDescription" 
-            placeholder="Brief description of what your game does (100-200 characters)"
-            required
-          ></textarea>
-        </div>
+<p class="subtitle">
+Send your game to the QPG team for review. If approved, it can be added directly to the QPG Hub with your credits.
+</p>
 
-        <!-- Category & Email (Row) -->
-        <div class="form-row">
-          <div class="form-group">
-            <label for="gameCategory">Category *</label>
-            <select id="gameCategory" name="gameCategory" required>
-              <option value="">Select a category</option>
-              <option value="dodge">Dodge & Dash</option>
-              <option value="rhythm">Rhythm & Reflex</option>
-              <option value="puzzle">Puzzle & Brain</option>
-              <option value="party">Party</option>
-              <option value="3d">3D Games</option>
-            </select>
-          </div>
+<div class="info-box">
+<strong>🎮 How it works</strong>
+Fill in the details → Give permission to send your submission → Our team receives the complete submission → We approve or decline → If approved, your game is added to QPG Hub.
+</div>
 
-          <div class="form-group">
-            <label for="userEmail">Email Address *</label>
-            <input 
-              type="email" 
-              id="userEmail" 
-              name="userEmail" 
-              placeholder="your@email.com" 
-              required
-            >
-          </div>
-        </div>
+<div id="errorBox" class="error-box"></div>
 
-        <!-- GitHub Profile & Game Link (Row) -->
-        <div class="form-row">
-          <div class="form-group">
-            <label for="userGithub">GitHub Profile (Optional)</label>
-            <input 
-              type="url" 
-              id="userGithub" 
-              name="userGithub" 
-              placeholder="https://github.com/username"
-            >
-          </div>
+<form id="gameSubmissionForm">
 
-          <div class="form-group">
-            <label for="gameLink">Game Link *</label>
-            <input 
-              type="url" 
-              id="gameLink" 
-              name="gameLink" 
-              placeholder="https://yoursite.com/game" 
-              required
-            >
-          </div>
-        </div>
+<div class="form-group">
+<label for="userName">Your Name *</label>
+<input id="userName" name="userName" type="text" maxlength="100" required>
+</div>
 
-        <!-- Game Code -->
-        <div class="form-group">
-          <label for="gameCode">Game Code (HTML/CSS/JS) *</label>
-          <textarea 
-            id="gameCode" 
-            name="gameCode" 
-            placeholder="Paste your complete game code here. Must be self-contained HTML (include CSS & JS inline or in <style>/<script> tags)"
-            required
-          ></textarea>
-        </div>
+<div class="form-group">
+<label for="gameName">Game Name *</label>
+<input id="gameName" name="gameName" type="text" maxlength="100" required>
+</div>
 
-        <!-- Submit Button -->
-        <button type="submit" class="submit-btn">📤 Submit Game</button>
-      </form>
+<div class="form-group">
+<label for="gameEmoji">Game Emoji / Icon *</label>
+<input
+  id="gameEmoji"
+  name="gameEmoji"
+  type="text"
+  maxlength="8"
+  placeholder="🎮"
+  required
+>
+</div>
 
-      <!-- Email Permission Dialog -->
-      <div class="email-permission" id="emailPermission">
-        <h3>📧 Email Permission Required</h3>
-        <p>We need your permission to send your complete submission details (including your game code and all information) to our review team at:</p>
-        <p><strong>devaniviaan@gmail.com</strong> and <strong>26bwsmd020041@bh05.billabonghighschool.com</strong></p>
-        <p>They will review your game and send you an approval or decline notification via email.</p>
-        <div class="permission-buttons">
-          <button type="button" class="allow" onclick="allowEmailAndSubmit()">✓ Allow & Send</button>
-          <button type="button" class="decline" onclick="denyEmailAndSubmit()">✗ Cancel</button>
-        </div>
-      </div>
-    </div>
+<div class="form-group">
+<label for="gameDescription">Game Description *</label>
+<textarea
+  id="gameDescription"
+  name="gameDescription"
+  maxlength="1000"
+  placeholder="Describe your game..."
+  required
+></textarea>
+</div>
 
-    <!-- Waiting Page -->
-    <div id="waitingPage" class="waiting-page">
-      <div class="waiting-icon">⏳</div>
-      <h2>Submission Received!</h2>
-      <p>Your game details have been sent to our review team at:</p>
-      <p><strong>devaniviaan@gmail.com</strong> and <strong>26bwsmd020041@bh05.billabonghighschool.com</strong></p>
-      <p style="margin-top: 20px; font-size: 13px; color: var(--ink-muted);">Our team will review your game and send you an approval or decline decision via email.</p>
-      <div class="loader" style="margin-top: 30px;"></div>
-    </div>
+<div class="form-row">
 
-    <!-- Thank You Page -->
-    <div id="thankYouPage" class="thank-you-page">
-      <div class="thank-you-icon">🎉</div>
-      <h2>Thank You!</h2>
-      <p>Your game has been successfully submitted and is now under review by our team.</p>
-      
-      <div class="thank-you-details">
-        <p><strong>📧 Email Sent To:</strong></p>
-        <p>devaniviaan@gmail.com</p>
-        <p>26bwsmd020041@bh05.billabonghighschool.com</p>
-        <p style="margin-top: 16px; border-top: 1px solid var(--line); padding-top: 16px;"><strong>What happens next:</strong></p>
-        <p>✓ Our team will review your game thoroughly</p>
-        <p>✓ We'll send you an email with our decision (approval or decline)</p>
-        <p>✓ If approved, your game will appear on the QPG Arcade Hub with your credits!</p>
-      </div>
+<div class="form-group">
+<label for="gameCategory">Category *</label>
 
-      <p style="font-size: 12px; color: var(--ink-muted); margin-top: 20px;">Check your email (including spam folder) for updates.</p>
-      
-      <a href="index.html" class="back-btn">← Back to Hub</a>
-    </div>
+<select id="gameCategory" name="gameCategory" required>
+<option value="">Select a category</option>
+<option value="dodge">Dodge & Dash</option>
+<option value="rhythm">Rhythm & Reflex</option>
+<option value="puzzle">Puzzle & Brain</option>
+<option value="party">Party</option>
+<option value="3d">3D Games</option>
+</select>
 
-  </div>
+</div>
+
+<div class="form-group">
+<label for="userEmail">Your Email *</label>
+<input id="userEmail" name="userEmail" type="email" required>
+</div>
+
+</div>
+
+<div class="form-row">
+
+<div class="form-group">
+<label for="userGithub">GitHub Profile</label>
+<input
+  id="userGithub"
+  name="userGithub"
+  type="url"
+  placeholder="https://github.com/username"
+>
+</div>
+
+<div class="form-group">
+<label for="gameLink">Game Link *</label>
+<input
+  id="gameLink"
+  name="gameLink"
+  type="url"
+  placeholder="https://example.github.io/game/"
+  required
+>
+</div>
+
+</div>
+
+<div class="form-group">
+<label for="gameCode">Game Code *</label>
+<textarea
+  id="gameCode"
+  name="gameCode"
+  placeholder="Paste the complete HTML/CSS/JS code for your game here."
+  required
+></textarea>
+</div>
+
+<div class="consent">
+<input id="emailConsent" type="checkbox" required>
+<label for="emailConsent">
+I give QPG permission to process this submission and send the information I entered, including the game code, to the QPG review team for verification.
+</label>
+</div>
+
+<button id="submitButton" class="submit-btn" type="submit">
+📤 Submit for Verification
+</button>
+
+</form>
+
+</div>
+
+<!-- ================= WAITING ================= -->
+
+<div id="waitingPage" class="status-page">
+
+<div class="status-icon">⏳</div>
+
+<h2>Waiting for a Confirmation</h2>
+
+<p>
+Your submission has been received and sent to the QPG review team.
+</p>
+
+<p>
+<strong>Wait some time while the team reviews your game.</strong>
+</p>
+
+<p>
+You do not need to submit the game again. This page will automatically update when a decision is made.
+</p>
+
+<div id="submissionId" class="submission-id"></div>
+
+<div style="margin-top:30px;">
+<div class="loader"></div>
+</div>
+
+</div>
+
+<!-- ================= APPROVED ================= -->
+
+<div id="approvedPage" class="status-page">
+
+<div class="status-icon">🎉</div>
+
+<h2 style="color:var(--cyan);">Thank You!</h2>
+
+<p>
+Your game has been approved and added to the QPG Hub.
+</p>
+
+<p id="approvedGameText"></p>
+
+<a href="index.html" class="back-btn">
+🎮 Go to QPG Hub
+</a>
+
+</div>
+
+<!-- ================= DECLINED ================= -->
+
+<div id="declinedPage" class="status-page">
+
+<div class="status-icon">📩</div>
+
+<h2>Submission Update</h2>
+
+<p>
+Your game submission was not approved for the QPG Hub this time.
+</p>
+
+<p id="declineReasonText"></p>
+
+<a href="index.html" class="back-btn">
+← Back to QPG Hub
+</a>
+
+</div>
+
+</div>
+
 </main>
 
 <footer>
-  <p>Made with ❤️ using HTML, CSS & JavaScript</p>
+<p>Made with ❤️ using HTML, CSS & JavaScript</p>
 </footer>
 
 <script>
-  let pendingFormData = null;
 
-  const form = document.getElementById('gameSubmissionForm');
-  const emailPermission = document.getElementById('emailPermission');
-  const formPage = document.getElementById('formPage');
-  const waitingPage = document.getElementById('waitingPage');
-  const thankYouPage = document.getElementById('thankYouPage');
+/*
+==========================================================
+IMPORTANT
+==========================================================
 
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
+Replace this with your deployed Google Apps Script URL.
 
-    const formData = {
-      userName: document.getElementById('userName').value,
-      gameName: document.getElementById('gameName').value,
-      gameEmoji: document.getElementById('gameEmoji').value,
-      gameDescription: document.getElementById('gameDescription').value,
-      gameCategory: document.getElementById('gameCategory').value,
-      userEmail: document.getElementById('userEmail').value,
-      userGithub: document.getElementById('userGithub').value,
-      gameLink: document.getElementById('gameLink').value,
-      gameCode: document.getElementById('gameCode').value,
-      submittedAt: new Date().toISOString(),
-      status: 'pending'
-    };
+Example:
+https://script.google.com/macros/s/XXXXXXXX/exec
+==========================================================
+*/
 
-    // Validate email
-    if (!formData.userEmail.includes('@')) {
-      alert('Please enter a valid email address');
-      return;
-    }
+const API_URL = "PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE";
 
-    // Validate URL
-    try {
-      new URL(formData.gameLink);
-    } catch {
-      alert('Please enter a valid game link URL');
-      return;
-    }
+const form = document.getElementById("gameSubmissionForm");
+const submitButton = document.getElementById("submitButton");
 
-    // Store pending form data
-    pendingFormData = formData;
+const formPage = document.getElementById("formPage");
+const waitingPage = document.getElementById("waitingPage");
+const approvedPage = document.getElementById("approvedPage");
+const declinedPage = document.getElementById("declinedPage");
 
-    // Show email permission dialog
-    emailPermission.classList.add('show');
+const errorBox = document.getElementById("errorBox");
+
+let currentSubmissionId = null;
+
+function showError(message){
+  errorBox.textContent = message;
+  errorBox.classList.add("show");
+}
+
+function hideError(){
+  errorBox.textContent = "";
+  errorBox.classList.remove("show");
+}
+
+function showOnly(page){
+  formPage.style.display = "none";
+  waitingPage.classList.remove("show");
+  approvedPage.classList.remove("show");
+  declinedPage.classList.remove("show");
+
+  if(page === "form"){
+    formPage.style.display = "block";
+  }
+
+  if(page === "waiting"){
+    waitingPage.classList.add("show");
+  }
+
+  if(page === "approved"){
+    approvedPage.classList.add("show");
+  }
+
+  if(page === "declined"){
+    declinedPage.classList.add("show");
+  }
+}
+
+/*
+Use a normal HTML POST form to avoid exposing secrets.
+The Apps Script backend accepts this submission.
+*/
+
+form.addEventListener("submit", function(e){
+
+  e.preventDefault();
+
+  hideError();
+
+  if(API_URL.includes("PASTE_YOUR")){
+    showError("The submission system has not been connected yet. Please contact the QPG team.");
+    return;
+  }
+
+  const gameLink = document.getElementById("gameLink").value.trim();
+
+  try{
+    new URL(gameLink);
+  }catch{
+    showError("Please enter a valid game link.");
+    return;
+  }
+
+  const data = {
+    action: "submit",
+
+    userName:
+      document.getElementById("userName").value.trim(),
+
+    gameName:
+      document.getElementById("gameName").value.trim(),
+
+    gameEmoji:
+      document.getElementById("gameEmoji").value.trim(),
+
+    gameDescription:
+      document.getElementById("gameDescription").value.trim(),
+
+    gameCategory:
+      document.getElementById("gameCategory").value,
+
+    userEmail:
+      document.getElementById("userEmail").value.trim(),
+
+    userGithub:
+      document.getElementById("userGithub").value.trim(),
+
+    gameLink:
+      gameLink,
+
+    gameCode:
+      document.getElementById("gameCode").value,
+
+    consent:
+      true
+  };
+
+  submitButton.disabled = true;
+  submitButton.textContent = "SENDING SUBMISSION...";
+
+  /*
+  Hidden iframe + form POST.
+  This works with Google Apps Script web apps without
+  depending on browser CORS behaviour.
+  */
+
+  const iframeName =
+    "qpgSubmitFrame_" + Date.now();
+
+  const iframe =
+    document.createElement("iframe");
+
+  iframe.name = iframeName;
+  iframe.style.display = "none";
+
+  document.body.appendChild(iframe);
+
+  const postForm =
+    document.createElement("form");
+
+  postForm.method = "POST";
+  postForm.action = API_URL;
+  postForm.target = iframeName;
+  postForm.style.display = "none";
+
+  Object.keys(data).forEach(function(key){
+
+    const input =
+      document.createElement("input");
+
+    input.type = "hidden";
+    input.name = key;
+    input.value =
+      typeof data[key] === "boolean"
+      ? String(data[key])
+      : data[key];
+
+    postForm.appendChild(input);
+
   });
 
-  window.allowEmailAndSubmit = async function() {
-    if (!pendingFormData) return;
+  document.body.appendChild(postForm);
 
-    // Hide form and permission dialog
-    formPage.style.display = 'none';
-    emailPermission.classList.remove('show');
-    
-    // Show waiting page
-    waitingPage.classList.add('show');
+  /*
+  Generate local tracking ID.
+  The backend also generates and emails the official ID.
+  */
 
-    try {
-      // Save to localStorage for admin panel FIRST
-      let submissions = JSON.parse(localStorage.getItem('qpgSubmissions')) || [];
-      pendingFormData.id = Date.now().toString();
-      submissions.push(pendingFormData);
-      localStorage.setItem('qpgSubmissions', JSON.stringify(submissions));
+  currentSubmissionId =
+    "QPG-" +
+    Date.now().toString(36).toUpperCase();
 
-      console.log('✅ Submission saved to localStorage:', pendingFormData);
+  document.getElementById("submissionId").textContent =
+    "Tracking ID: " + currentSubmissionId;
 
-      // Format the email content with all details
-      const emailContent = `
-=====================================
-NEW GAME SUBMISSION FOR QPG ARCADE
-=====================================
+  showOnly("waiting");
 
-SUBMISSION DATE: ${new Date(pendingFormData.submittedAt).toLocaleString()}
+  postForm.submit();
 
-CREATOR INFORMATION:
-====================
-Name: ${pendingFormData.userName}
-Email: ${pendingFormData.userEmail}
-GitHub: ${pendingFormData.userGithub || 'Not provided'}
+  setTimeout(function(){
 
-GAME DETAILS:
-=============
-Title: ${pendingFormData.gameName}
-Emoji/Icon: ${pendingFormData.gameEmoji}
-Category: ${pendingFormData.gameCategory}
-Description: ${pendingFormData.gameDescription}
-Game Link: ${pendingFormData.gameLink}
+    postForm.remove();
+    iframe.remove();
 
-GAME CODE:
-==========
-${pendingFormData.gameCode}
+    startStatusPolling();
 
-=====================================
-ACTION REQUIRED:
-Visit: https://qpg-quick-playable-games.github.io/QPG-Hub/admin-panel.html
-Login and Approve or Decline this submission
-=====================================
-      `;
+  }, 2500);
 
-      // Try to send via EmailJS (if configured)
-      if (typeof emailjs !== 'undefined') {
-        try {
-          await emailjs.send('service_qpg', 'template_submission', {
-            to_email: 'devaniviaan@gmail.com',
-            subject: `New Game Submission: ${pendingFormData.gameName}`,
-            message: emailContent,
-            from_name: pendingFormData.userName,
-            from_email: pendingFormData.userEmail
-          });
+});
 
-          await emailjs.send('service_qpg', 'template_submission', {
-            to_email: '26bwsmd020041@bh05.billabonghighschool.com',
-            subject: `New Game Submission: ${pendingFormData.gameName}`,
-            message: emailContent,
-            from_name: pendingFormData.userName,
-            from_email: pendingFormData.userEmail
-          });
+/*
+==========================================================
+STATUS POLLING
+==========================================================
+*/
 
-          console.log('✅ Emails sent successfully');
-        } catch (emailError) {
-          console.log('⚠️ Email service not configured, but submission saved locally');
-        }
-      } else {
-        console.log('⚠️ EmailJS not loaded, submission saved locally');
-        console.log('📧 Email content that would be sent:', emailContent);
+function startStatusPolling(){
+
+  if(!currentSubmissionId) return;
+
+  /*
+  The frontend cannot know the server-generated ID because
+  the POST response is inside a hidden iframe.
+
+  Therefore we use the user's email + game name as the
+  lookup key.
+  */
+
+  const email =
+    encodeURIComponent(
+      document.getElementById("userEmail").value.trim()
+    );
+
+  const gameName =
+    encodeURIComponent(
+      document.getElementById("gameName").value.trim()
+    );
+
+  const callbackName =
+    "qpgStatus_" + Date.now();
+
+  window[callbackName] = function(result){
+
+    try{
+
+      if(!result || !result.ok){
+        return;
       }
 
-      // After 3 seconds, show thank you page
-      setTimeout(() => {
-        waitingPage.classList.remove('show');
-        thankYouPage.classList.add('show');
-      }, 3000);
+      if(result.status === "approved"){
 
-      // Clear pending data
-      pendingFormData = null;
+        document.getElementById(
+          "approvedGameText"
+        ).textContent =
+          '"' + result.gameName + '" is now live on QPG Hub.";
 
-    } catch (error) {
-      console.error('❌ Error:', error);
-      waitingPage.classList.remove('show');
-      formPage.style.display = 'block';
-      alert('Submission saved! Check admin panel. Error: ' + error.message);
+        showOnly("approved");
+
+        cleanupJSONP(callbackName);
+
+      }
+
+      else if(result.status === "declined"){
+
+        document.getElementById(
+          "declineReasonText"
+        ).textContent =
+          result.reason
+          ? "Reason: " + result.reason
+          : "Thank you for submitting your game.";
+
+        showOnly("declined");
+
+        cleanupJSONP(callbackName);
+
+      }
+
+    }catch(err){
+
+      console.error(err);
+
     }
+
   };
 
-  window.denyEmailAndSubmit = function() {
-    emailPermission.classList.remove('show');
-    pendingFormData = null;
-  };
+  const script =
+    document.createElement("script");
+
+  script.src =
+    API_URL +
+    "?action=status" +
+    "&email=" + email +
+    "&gameName=" + gameName +
+    "&callback=" + callbackName;
+
+  script.id = callbackName;
+
+  document.body.appendChild(script);
+
+  setTimeout(function(){
+
+    cleanupJSONP(callbackName);
+
+  }, 10000);
+
+  /*
+  Continue checking every 20 seconds.
+  */
+
+  setTimeout(startStatusPolling, 20000);
+}
+
+function cleanupJSONP(name){
+
+  const script =
+    document.getElementById(name);
+
+  if(script){
+    script.remove();
+  }
+
+  try{
+    delete window[name];
+  }catch(e){}
+}
+
 </script>
 
 </body>
