@@ -1,17 +1,1561 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
+<meta
+  name="description"
+  content="Submit your game to QPG Hub for verification."
+>
+
+<title>Submit Your Game — QPG Hub</title>
+
+<link
+  rel="icon"
+  href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎮</text></svg>"
+>
+
+<style>
+
+/* =========================================================
+   QPG SUBMIT GAME
+   COMPLETE PAGE STYLING
+   ========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+
+  font-family:
+    Inter,
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(95, 80, 255, 0.25),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      rgba(0, 220, 255, 0.18),
+      transparent 35%
+    ),
+    #070914;
+
+  color: #ffffff;
+}
+
+
+/* =========================================================
+   BACKGROUND
+   ========================================================= */
+
+.page-background {
+  position: fixed;
+  inset: 0;
+
+  pointer-events: none;
+
+  overflow: hidden;
+
+  z-index: 0;
+}
+
+.glow {
+  position: absolute;
+
+  width: 350px;
+  height: 350px;
+
+  border-radius: 50%;
+
+  filter: blur(100px);
+
+  opacity: 0.25;
+}
+
+.glow.one {
+  top: -120px;
+  left: -100px;
+
+  background: #5f50ff;
+}
+
+.glow.two {
+  right: -120px;
+  bottom: -120px;
+
+  background: #00d9ff;
+}
+
+
+/* =========================================================
+   MAIN CONTAINER
+   ========================================================= */
+
+.container {
+  position: relative;
+
+  z-index: 1;
+
+  width: min(
+    900px,
+    calc(100% - 32px)
+  );
+
+  margin: 0 auto;
+
+  padding: 40px 0 70px;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.header {
+  text-align: center;
+
+  margin-bottom: 30px;
+}
+
+.logo {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 76px;
+  height: 76px;
+
+  border-radius: 22px;
+
+  font-size: 40px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #665cff,
+      #19d8ff
+    );
+
+  box-shadow:
+    0 15px 45px
+    rgba(0, 150, 255, 0.25);
+
+  margin-bottom: 18px;
+}
+
+.header h1 {
+  margin: 0;
+
+  font-size: clamp(
+    30px,
+    5vw,
+    48px
+  );
+
+  line-height: 1.1;
+
+  font-weight: 800;
+
+  letter-spacing: -1.5px;
+}
+
+.header h1 span {
+  background:
+    linear-gradient(
+      90deg,
+      #8d7cff,
+      #2be3ff
+    );
+
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  color: transparent;
+}
+
+.header p {
+  max-width: 650px;
+
+  margin: 14px auto 0;
+
+  color: #aeb5cc;
+
+  line-height: 1.7;
+
+  font-size: 16px;
+}
+
+
+/* =========================================================
+   CARD
+   ========================================================= */
+
+.card {
+  background:
+    rgba(
+      15,
+      19,
+      38,
+      0.88
+    );
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.09
+    );
+
+  border-radius: 24px;
+
+  padding: clamp(
+    22px,
+    5vw,
+    40px
+  );
+
+  box-shadow:
+    0 25px 80px
+    rgba(0, 0, 0, 0.35);
+
+  backdrop-filter:
+    blur(18px);
+
+  -webkit-backdrop-filter:
+    blur(18px);
+}
+
+
+/* =========================================================
+   SECTION TITLES
+   ========================================================= */
+
+.section {
+  margin-bottom: 30px;
+}
+
+.section:last-child {
+  margin-bottom: 0;
+}
+
+.section-title {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  margin: 0 0 18px;
+
+  font-size: 20px;
+
+  font-weight: 750;
+}
+
+.section-number {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 30px;
+  height: 30px;
+
+  border-radius: 10px;
+
+  background:
+    rgba(
+      108,
+      94,
+      255,
+      0.18
+    );
+
+  border:
+    1px solid
+    rgba(
+      130,
+      120,
+      255,
+      0.28
+    );
+
+  color: #aaa1ff;
+
+  font-size: 14px;
+
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   FORM GRID
+   ========================================================= */
+
+.form-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(
+        0,
+        1fr
+      )
+    );
+
+  gap: 18px;
+}
+
+.full {
+  grid-column: 1 / -1;
+}
+
+
+/* =========================================================
+   FORM GROUP
+   ========================================================= */
+
+.form-group {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 8px;
+}
+
+.form-group label {
+  color: #dfe3f2;
+
+  font-size: 14px;
+
+  font-weight: 650;
+}
+
+.required {
+  color: #ff7196;
+}
+
+
+/* =========================================================
+   INPUTS
+   ========================================================= */
+
+input,
+textarea,
+select {
+  width: 100%;
+
+  border: 1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.11
+    );
+
+  outline: none;
+
+  border-radius: 13px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.045
+    );
+
+  color: #ffffff;
+
+  font-family: inherit;
+
+  font-size: 15px;
+
+  padding: 14px 15px;
+
+  transition:
+    border-color 0.2s,
+    background 0.2s,
+    box-shadow 0.2s;
+}
+
+input {
+  min-height: 48px;
+}
+
+textarea {
+  min-height: 130px;
+
+  resize: vertical;
+
+  line-height: 1.55;
+}
+
+textarea.code-input {
+  min-height: 330px;
+
+  font-family:
+    "Cascadia Code",
+    "Consolas",
+    monospace;
+
+  font-size: 13px;
+
+  line-height: 1.55;
+}
+
+select {
+  min-height: 48px;
+
+  cursor: pointer;
+}
+
+select option {
+  background: #11152a;
+
+  color: #ffffff;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #6f7690;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color:
+    rgba(
+      113,
+      101,
+      255,
+      0.75
+    );
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.065
+    );
+
+  box-shadow:
+    0 0 0 4px
+    rgba(
+      105,
+      92,
+      255,
+      0.10
+    );
+}
+
+
+/* =========================================================
+   HELP TEXT
+   ========================================================= */
+
+.help {
+  margin: 0;
+
+  color: #777f9b;
+
+  font-size: 12px;
+
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   GAME CODE WARNING
+   ========================================================= */
+
+.code-info {
+  padding: 15px 16px;
+
+  margin-bottom: 18px;
+
+  border-radius: 14px;
+
+  background:
+    rgba(
+      0,
+      210,
+      255,
+      0.06
+    );
+
+  border:
+    1px solid
+    rgba(
+      0,
+      210,
+      255,
+      0.14
+    );
+
+  color: #aebdd2;
+
+  font-size: 13px;
+
+  line-height: 1.55;
+}
+
+
+/* =========================================================
+   CONSENT
+   ========================================================= */
+
+.consent-box {
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 12px;
+
+  padding: 17px;
+
+  border-radius: 15px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.035
+    );
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.08
+    );
+}
+
+.consent-box input {
+  width: 19px;
+  height: 19px;
+
+  min-height: 19px;
+
+  margin-top: 2px;
+
+  flex-shrink: 0;
+
+  accent-color: #7062ff;
+
+  cursor: pointer;
+}
+
+.consent-box label {
+  color: #b7bdd0;
+
+  font-size: 13px;
+
+  line-height: 1.6;
+
+  cursor: pointer;
+}
+
+
+/* =========================================================
+   ERROR
+   ========================================================= */
+
+#errorBox {
+  display: none;
+
+  margin-bottom: 20px;
+
+  padding: 15px 17px;
+
+  border-radius: 14px;
+
+  background:
+    rgba(
+      255,
+      70,
+      105,
+      0.10
+    );
+
+  border:
+    1px solid
+    rgba(
+      255,
+      70,
+      105,
+      0.30
+    );
+
+  color: #ff9aae;
+
+  line-height: 1.5;
+
+  font-size: 14px;
+}
+
+#errorBox.show {
+  display: block;
+}
+
+
+/* =========================================================
+   SUBMIT BUTTON
+   ========================================================= */
+
+.submit-button {
+  width: 100%;
+
+  min-height: 56px;
+
+  border: none;
+
+  border-radius: 15px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #665cff,
+      #238fff
+    );
+
+  color: white;
+
+  font-family: inherit;
+
+  font-size: 16px;
+
+  font-weight: 800;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 15px 35px
+    rgba(
+      71,
+      91,
+      255,
+      0.22
+    );
+
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s,
+    opacity 0.2s;
+}
+
+.submit-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 20px 42px
+    rgba(
+      71,
+      91,
+      255,
+      0.30
+    );
+}
+
+.submit-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.submit-button:disabled {
+  cursor: not-allowed;
+
+  opacity: 0.6;
+}
+
+
+/* =========================================================
+   PAGES
+   ========================================================= */
+
+.status-page {
+  display: none;
+
+  text-align: center;
+
+  padding: 25px 10px 10px;
+}
+
+.status-page.show {
+  display: block;
+}
+
+.status-icon {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 92px;
+  height: 92px;
+
+  margin: 0 auto 22px;
+
+  border-radius: 28px;
+
+  font-size: 45px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.055
+    );
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.10
+    );
+}
+
+.status-page h2 {
+  margin: 0 0 12px;
+
+  font-size: 30px;
+}
+
+.status-page p {
+  max-width: 620px;
+
+  margin: 0 auto 14px;
+
+  color: #aeb5ca;
+
+  line-height: 1.7;
+}
+
+.submission-id {
+  display: inline-block;
+
+  margin-top: 10px;
+
+  padding: 11px 15px;
+
+  border-radius: 11px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.05
+    );
+
+  color: #cfd4e6;
+
+  font-family:
+    "Cascadia Code",
+    Consolas,
+    monospace;
+
+  font-size: 13px;
+}
+
+.status-note {
+  margin-top: 20px !important;
+
+  font-size: 13px !important;
+
+  color: #777f98 !important;
+}
+
+
+/* =========================================================
+   SUCCESS / DECLINE
+   ========================================================= */
+
+.approved-title {
+  color: #7ef0bd;
+}
+
+.declined-title {
+  color: #ff91a7;
+}
+
+.action-button {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  min-height: 48px;
+
+  padding: 0 22px;
+
+  margin-top: 18px;
+
+  border-radius: 13px;
+
+  text-decoration: none;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.07
+    );
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.11
+    );
+
+  color: white;
+
+  font-weight: 700;
+
+  transition:
+    background 0.2s,
+    transform 0.2s;
+}
+
+.action-button:hover {
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.11
+    );
+
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.footer {
+  text-align: center;
+
+  margin-top: 25px;
+
+  color: #666d86;
+
+  font-size: 12px;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+  .container {
+    width: min(
+      100% - 20px,
+      900px
+    );
+
+    padding-top: 25px;
+  }
+
+  .card {
+    padding: 20px 16px;
+
+    border-radius: 19px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .full {
+    grid-column: auto;
+  }
+
+  .header h1 {
+    font-size: 32px;
+  }
+
+  .header p {
+    font-size: 14px;
+  }
+
+}
+
+
+/* =========================================================
+   HIDDEN IFRAME
+   ========================================================= */
+
+.qpg-hidden-frame {
+  display: none;
+
+  width: 0;
+  height: 0;
+
+  border: 0;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="page-background">
+
+  <div class="glow one"></div>
+
+  <div class="glow two"></div>
+
+</div>
+
+
+<main class="container">
+
+
+  <!-- =====================================================
+       HEADER
+       ===================================================== -->
+
+  <header class="header">
+
+    <div class="logo">
+      🎮
+    </div>
+
+    <h1>
+      Submit Your Game to
+      <span>QPG Hub</span>
+    </h1>
+
+    <p>
+      Have you created a game?
+      Submit it to QPG Hub for review.
+      Our review team will verify your submission
+      before it is added to the Game Hub.
+    </p>
+
+  </header>
+
+
+  <!-- =====================================================
+       MAIN CARD
+       ===================================================== -->
+
+  <section class="card">
+
+
+    <!-- ===================================================
+         FORM PAGE
+         =================================================== -->
+
+    <div id="formPage">
+
+
+      <form
+        id="gameSubmissionForm"
+        autocomplete="on"
+      >
+
+
+        <!-- ===============================================
+             GAME INFORMATION
+             =============================================== -->
+
+        <section class="section">
+
+          <h2 class="section-title">
+
+            <span class="section-number">
+              1
+            </span>
+
+            Game Information
+
+          </h2>
+
+
+          <div class="form-grid">
+
+
+            <div class="form-group">
+
+              <label for="gameName">
+                Game Name
+                <span class="required">*</span>
+              </label>
+
+              <input
+                id="gameName"
+                name="gameName"
+                type="text"
+                placeholder="e.g. Chess Arena"
+                maxlength="100"
+                required
+              >
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label for="gameEmoji">
+                Game Emoji
+                <span class="required">*</span>
+              </label>
+
+              <input
+                id="gameEmoji"
+                name="gameEmoji"
+                type="text"
+                placeholder="e.g. ♟️"
+                maxlength="10"
+                required
+              >
+
+            </div>
+
+
+            <div class="form-group full">
+
+              <label for="gameDescription">
+                Game Description
+                <span class="required">*</span>
+              </label>
+
+              <textarea
+                id="gameDescription"
+                name="gameDescription"
+                placeholder="Describe your game and what makes it fun..."
+                maxlength="1000"
+                required
+              ></textarea>
+
+              <p class="help">
+                Keep the description clear and suitable for
+                the QPG Hub game listing.
+              </p>
+
+            </div>
+
+
+            <div class="form-group full">
+
+              <label for="gameCategory">
+                Category
+                <span class="required">*</span>
+              </label>
+
+              <select
+                id="gameCategory"
+                name="gameCategory"
+                required
+              >
+
+                <option
+                  value=""
+                  selected
+                  disabled
+                >
+                  Select a category
+                </option>
+
+                <option value="action">
+                  Action
+                </option>
+
+                <option value="adventure">
+                  Adventure
+                </option>
+
+                <option value="arcade">
+                  Arcade
+                </option>
+
+                <option value="board">
+                  Board
+                </option>
+
+                <option value="casual">
+                  Casual
+                </option>
+
+                <option value="educational">
+                  Educational
+                </option>
+
+                <option value="puzzle">
+                  Puzzle
+                </option>
+
+                <option value="racing">
+                  Racing
+                </option>
+
+                <option value="sports">
+                  Sports
+                </option>
+
+                <option value="strategy">
+                  Strategy
+                </option>
+
+                <option value="other">
+                  Other
+                </option>
+
+              </select>
+
+            </div>
+
+
+          </div>
+
+        </section>
+
+
+        <!-- =================================================
+             CREATOR INFORMATION
+             ================================================= -->
+
+        <section class="section">
+
+          <h2 class="section-title">
+
+            <span class="section-number">
+              2
+            </span>
+
+            Creator Information
+
+          </h2>
+
+
+          <div class="form-grid">
+
+
+            <div class="form-group">
+
+              <label for="userName">
+                Your Name
+                <span class="required">*</span>
+              </label>
+
+              <input
+                id="userName"
+                name="userName"
+                type="text"
+                placeholder="Your name"
+                maxlength="100"
+                required
+              >
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label for="userEmail">
+                Email
+                <span class="required">*</span>
+              </label>
+
+              <input
+                id="userEmail"
+                name="userEmail"
+                type="email"
+                placeholder="you@example.com"
+                maxlength="200"
+                required
+              >
+
+              <p class="help">
+                We use this to notify you when your game
+                is approved or declined.
+              </p>
+
+            </div>
+
+
+            <div class="form-group full">
+
+              <label for="userGithub">
+                GitHub Username
+              </label>
+
+              <input
+                id="userGithub"
+                name="userGithub"
+                type="text"
+                placeholder="e.g. your-github-username"
+                maxlength="100"
+              >
+
+              <p class="help">
+                Optional. Enter your GitHub username if you
+                want it associated with the submission.
+              </p>
+
+            </div>
+
+
+          </div>
+
+        </section>
+
+
+        <!-- =================================================
+             GAME LINK
+             ================================================= -->
+
+        <section class="section">
+
+          <h2 class="section-title">
+
+            <span class="section-number">
+              3
+            </span>
+
+            Playable Game
+
+          </h2>
+
+
+          <div class="form-group">
+
+            <label for="gameLink">
+              Game Link
+              <span class="required">*</span>
+            </label>
+
+            <input
+              id="gameLink"
+              name="gameLink"
+              type="url"
+              placeholder="https://yourusername.github.io/your-game/"
+              maxlength="2000"
+              required
+            >
+
+            <p class="help">
+              Enter the URL where reviewers can play your game.
+              It must begin with http:// or https://.
+            </p>
+
+          </div>
+
+        </section>
+
+
+        <!-- =================================================
+             GAME CODE
+             ================================================= -->
+
+        <section class="section">
+
+          <h2 class="section-title">
+
+            <span class="section-number">
+              4
+            </span>
+
+            Game Code
+
+          </h2>
+
+
+          <div class="code-info">
+
+            Your complete game code will be sent to the
+            QPG review team and stored securely with the
+            submission. Do not include passwords, private
+            API keys, access tokens, or other secrets in
+            your game code.
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="gameCode">
+              Complete Game Code
+              <span class="required">*</span>
+            </label>
+
+            <textarea
+              id="gameCode"
+              name="gameCode"
+              class="code-input"
+              placeholder="Paste your complete game code here..."
+              required
+            ></textarea>
+
+            <p class="help">
+              Paste the complete source code required for
+              reviewers to inspect your game.
+            </p>
+
+          </div>
+
+        </section>
+
+
+        <!-- =================================================
+             CONSENT
+             ================================================= -->
+
+        <section class="section">
+
+          <h2 class="section-title">
+
+            <span class="section-number">
+              5
+            </span>
+
+            Final Confirmation
+
+          </h2>
+
+
+          <div class="consent-box">
+
+            <input
+              id="consent"
+              name="consent"
+              type="checkbox"
+              required
+            >
+
+            <label for="consent">
+
+              I confirm that I have permission to submit this
+              game and that the information and code I am
+              submitting can be reviewed by the QPG review
+              team.
+
+            </label>
+
+          </div>
+
+        </section>
+
+
+        <!-- =================================================
+             ERROR
+             ================================================= -->
+
+        <div
+          id="errorBox"
+          role="alert"
+        ></div>
+
+
+        <!-- =================================================
+             SUBMIT
+             ================================================= -->
+
+        <button
+          id="submitButton"
+          class="submit-button"
+          type="submit"
+        >
+          📤 Submit for Verification
+        </button>
+
+
+      </form>
+
+    </div>
+
+
+    <!-- =====================================================
+         WAITING PAGE
+         ===================================================== -->
+
+    <div
+      id="waitingPage"
+      class="status-page"
+    >
+
+      <div class="status-icon">
+        ⏳
+      </div>
+
+      <h2>
+        Submission Received
+      </h2>
+
+      <p>
+        Your game has been submitted to the QPG review team.
+        Please wait while the reviewers check your submission.
+      </p>
+
+      <div
+        id="submissionId"
+        class="submission-id"
+      >
+        Submission ID: —
+      </div>
+
+      <p class="status-note">
+        This page automatically checks the submission status.
+        You can safely refresh the page if necessary.
+      </p>
+
+    </div>
+
+
+    <!-- =====================================================
+         APPROVED PAGE
+         ===================================================== -->
+
+    <div
+      id="approvedPage"
+      class="status-page"
+    >
+
+      <div class="status-icon">
+        🎉
+      </div>
+
+      <h2 class="approved-title">
+        Game Approved!
+      </h2>
+
+      <p id="approvedGameText">
+        Your game is now live on QPG Hub.
+      </p>
+
+      <p>
+        Congratulations! Your game has passed review and
+        has been added to the QPG Hub game list.
+      </p>
+
+      <a
+        class="action-button"
+        href="https://qpg-quick-playable-games.github.io/QPG-Hub/"
+      >
+        🎮 Open QPG Hub
+      </a>
+
+    </div>
+
+
+    <!-- =====================================================
+         DECLINED PAGE
+         ===================================================== -->
+
+    <div
+      id="declinedPage"
+      class="status-page"
+    >
+
+      <div class="status-icon">
+        📋
+      </div>
+
+      <h2 class="declined-title">
+        Submission Declined
+      </h2>
+
+      <p>
+        Unfortunately, your game was not approved for
+        QPG Hub at this time.
+      </p>
+
+      <p id="declineReasonText">
+        Thank you for submitting your game.
+      </p>
+
+      <a
+        class="action-button"
+        href="javascript:void(0)"
+        onclick="showOnly('form');"
+      >
+        ← Return to Submission Form
+      </a>
+
+    </div>
+
+
+  </section>
+
+
+  <footer class="footer">
+
+    QPG Hub • Quick Playable Games
+
+  </footer>
+
+
+</main>
+
+
+<!-- =========================================================
+     HIDDEN IFRAME
+     ========================================================= -->
+
+<iframe
+  id="qpgHiddenFrame"
+  class="qpg-hidden-frame"
+  name="qpgHiddenFrame"
+  title="QPG submission"
+></iframe>
+
+
+<!-- =========================================================
+     QPG SUBMISSION JAVASCRIPT
+     ========================================================= -->
+
 <script>
 
 /*
-==========================================================
+============================================================
 QPG GAME SUBMISSION
 FRONTEND
-==========================================================
+============================================================
 
 IMPORTANT:
 Put ONLY your deployed Google Apps Script /exec URL here.
-
-Example:
-
-https://script.google.com/macros/s/XXXXXXXXXXXX/exec
 
 DO NOT add:
 ?action=submit
@@ -19,63 +1563,82 @@ DO NOT add:
 ?gameName=
 
 Just the /exec URL.
-==========================================================
+============================================================
 */
 
 const API_URL =
   "https://script.google.com/macros/s/AKfycbw4ECyaxz4QugI_PVUoFpikzONV8Xu9tRLuBrz1C3SU6YXy_40qLM9PVIAV4yBrqHef/exec";
 
+
 /*
-==========================================================
+============================================================
 ELEMENTS
-==========================================================
+============================================================
 */
 
 const form =
-  document.getElementById("gameSubmissionForm");
+  document.getElementById(
+    "gameSubmissionForm"
+  );
 
 const submitButton =
-  document.getElementById("submitButton");
+  document.getElementById(
+    "submitButton"
+  );
 
 const formPage =
-  document.getElementById("formPage");
+  document.getElementById(
+    "formPage"
+  );
 
 const waitingPage =
-  document.getElementById("waitingPage");
+  document.getElementById(
+    "waitingPage"
+  );
 
 const approvedPage =
-  document.getElementById("approvedPage");
+  document.getElementById(
+    "approvedPage"
+  );
 
 const declinedPage =
-  document.getElementById("declinedPage");
+  document.getElementById(
+    "declinedPage"
+  );
 
 const errorBox =
-  document.getElementById("errorBox");
+  document.getElementById(
+    "errorBox"
+  );
 
 const submissionIdElement =
-  document.getElementById("submissionId");
+  document.getElementById(
+    "submissionId"
+  );
 
 
 /*
-==========================================================
+============================================================
 CURRENT SUBMISSION
-==========================================================
+============================================================
 */
 
 let currentSubmissionId = null;
+
 let currentStatusToken = null;
 
 let statusTimer = null;
+
 let statusAttempts = 0;
 
 
 /*
-==========================================================
+============================================================
 SHOW ERROR
-==========================================================
+============================================================
 */
 
-function showError(message){
+function showError(message) {
 
   errorBox.textContent =
     message;
@@ -88,12 +1651,12 @@ function showError(message){
 
 
 /*
-==========================================================
+============================================================
 HIDE ERROR
-==========================================================
+============================================================
 */
 
-function hideError(){
+function hideError() {
 
   errorBox.textContent =
     "";
@@ -106,12 +1669,12 @@ function hideError(){
 
 
 /*
-==========================================================
+============================================================
 SHOW PAGE
-==========================================================
+============================================================
 */
 
-function showOnly(page){
+function showOnly(page) {
 
   formPage.style.display =
     "none";
@@ -129,7 +1692,7 @@ function showOnly(page){
   );
 
 
-  if(page === "form"){
+  if (page === "form") {
 
     formPage.style.display =
       "block";
@@ -137,7 +1700,7 @@ function showOnly(page){
   }
 
 
-  if(page === "waiting"){
+  if (page === "waiting") {
 
     waitingPage.classList.add(
       "show"
@@ -146,7 +1709,7 @@ function showOnly(page){
   }
 
 
-  if(page === "approved"){
+  if (page === "approved") {
 
     approvedPage.classList.add(
       "show"
@@ -155,7 +1718,7 @@ function showOnly(page){
   }
 
 
-  if(page === "declined"){
+  if (page === "declined") {
 
     declinedPage.classList.add(
       "show"
@@ -167,23 +1730,23 @@ function showOnly(page){
 
 
 /*
-==========================================================
+============================================================
 GENERATE RANDOM ID
-==========================================================
+============================================================
 
-This ID is safe to use as a submission identifier.
+The frontend generates the ID.
 
-The backend uses this same ID.
-==========================================================
+The backend now uses the same ID.
+============================================================
 */
 
-function generateSubmissionId(){
+function generateSubmissionId() {
 
-  if(
+  if (
     window.crypto &&
     typeof window.crypto.randomUUID ===
       "function"
-  ){
+  ) {
 
     return (
       "QPG-" +
@@ -199,7 +1762,9 @@ function generateSubmissionId(){
 
   return (
     "QPG-" +
-    Date.now().toString(36).toUpperCase() +
+    Date.now()
+      .toString(36)
+      .toUpperCase() +
     "-" +
     Math.random()
       .toString(36)
@@ -211,23 +1776,18 @@ function generateSubmissionId(){
 
 
 /*
-==========================================================
+============================================================
 GENERATE STATUS TOKEN
-==========================================================
-
-This gives the public status checker an additional
-random value instead of relying only on the game name
-and email address.
-==========================================================
+============================================================
 */
 
-function generateStatusToken(){
+function generateStatusToken() {
 
-  if(
+  if (
     window.crypto &&
     typeof window.crypto.randomUUID ===
       "function"
-  ){
+  ) {
 
     return (
       window.crypto.randomUUID() +
@@ -247,12 +1807,12 @@ function generateStatusToken(){
 
 
 /*
-==========================================================
+============================================================
 SAVE PENDING SUBMISSION
-==========================================================
+============================================================
 */
 
-function savePendingSubmission(){
+function savePendingSubmission() {
 
   const data = {
 
@@ -277,14 +1837,14 @@ function savePendingSubmission(){
 
 
 /*
-==========================================================
+============================================================
 LOAD PENDING SUBMISSION
-==========================================================
+============================================================
 */
 
-function loadPendingSubmission(){
+function loadPendingSubmission() {
 
-  try{
+  try {
 
     const saved =
       localStorage.getItem(
@@ -292,7 +1852,7 @@ function loadPendingSubmission(){
       );
 
 
-    if(!saved){
+    if (!saved) {
 
       return null;
 
@@ -305,11 +1865,11 @@ function loadPendingSubmission(){
       );
 
 
-    if(
+    if (
       !data ||
       !data.id ||
       !data.token
-    ){
+    ) {
 
       return null;
 
@@ -318,7 +1878,8 @@ function loadPendingSubmission(){
 
     return data;
 
-  }catch(error){
+
+  } catch (error) {
 
     console.error(
       "Could not load pending submission:",
@@ -333,12 +1894,12 @@ function loadPendingSubmission(){
 
 
 /*
-==========================================================
+============================================================
 CLEAR PENDING SUBMISSION
-==========================================================
+============================================================
 */
 
-function clearPendingSubmission(){
+function clearPendingSubmission() {
 
   localStorage.removeItem(
     "qpgPendingSubmission"
@@ -348,14 +1909,14 @@ function clearPendingSubmission(){
 
 
 /*
-==========================================================
+============================================================
 FORM SUBMISSION
-==========================================================
+============================================================
 */
 
 form.addEventListener(
   "submit",
-  function(event){
+  function(event) {
 
     event.preventDefault();
 
@@ -363,16 +1924,16 @@ form.addEventListener(
 
 
     /*
-    ======================================================
+    ========================================================
     CHECK API URL
-    ======================================================
+    ========================================================
     */
 
-    if(
+    if (
       API_URL.includes(
         "PASTE_YOUR"
       )
-    ){
+    ) {
 
       showError(
         "The QPG submission system has not been connected yet. Add your Google Apps Script /exec URL."
@@ -384,16 +1945,16 @@ form.addEventListener(
 
 
     /*
-    ======================================================
+    ========================================================
     CHECK API URL FORMAT
-    ======================================================
+    ========================================================
     */
 
-    if(
+    if (
       !API_URL.includes(
         "/exec"
       )
-    ){
+    ) {
 
       showError(
         "Your Google Apps Script URL looks incorrect. Use the Web App URL ending in /exec."
@@ -405,19 +1966,21 @@ form.addEventListener(
 
 
     /*
-    ======================================================
+    ========================================================
     GET GAME LINK
-    ======================================================
+    ========================================================
     */
 
     const gameLink =
       document
-        .getElementById("gameLink")
+        .getElementById(
+          "gameLink"
+        )
         .value
         .trim();
 
 
-    try{
+    try {
 
       const url =
         new URL(
@@ -425,16 +1988,19 @@ form.addEventListener(
         );
 
 
-      if(
-        url.protocol !== "https:" &&
-        url.protocol !== "http:"
-      ){
+      if (
+        url.protocol !==
+          "https:" &&
+        url.protocol !==
+          "http:"
+      ) {
 
         throw new Error();
 
       }
 
-    }catch(error){
+
+    } catch (error) {
 
       showError(
         "Please enter a valid game link beginning with http:// or https://."
@@ -446,15 +2012,9 @@ form.addEventListener(
 
 
     /*
-    ======================================================
+    ========================================================
     CONFIRMATION
-    ======================================================
-
-    If the user presses Cancel:
-
-    NOTHING IS SENT.
-    NOTHING IS SAVED.
-    ======================================================
+    ========================================================
     */
 
     const confirmed =
@@ -470,7 +2030,7 @@ Press Cancel to do nothing.`
       );
 
 
-    if(!confirmed){
+    if (!confirmed) {
 
       return;
 
@@ -478,9 +2038,9 @@ Press Cancel to do nothing.`
 
 
     /*
-    ======================================================
+    ========================================================
     GENERATE TRACKING INFORMATION
-    ======================================================
+    ========================================================
     */
 
     currentSubmissionId =
@@ -492,9 +2052,9 @@ Press Cancel to do nothing.`
 
 
     /*
-    ======================================================
+    ========================================================
     COLLECT FORM DATA
-    ======================================================
+    ========================================================
     */
 
     const data = {
@@ -510,42 +2070,56 @@ Press Cancel to do nothing.`
 
       userName:
         document
-          .getElementById("userName")
+          .getElementById(
+            "userName"
+          )
           .value
           .trim(),
 
       gameName:
         document
-          .getElementById("gameName")
+          .getElementById(
+            "gameName"
+          )
           .value
           .trim(),
 
       gameEmoji:
         document
-          .getElementById("gameEmoji")
+          .getElementById(
+            "gameEmoji"
+          )
           .value
           .trim(),
 
       gameDescription:
         document
-          .getElementById("gameDescription")
+          .getElementById(
+            "gameDescription"
+          )
           .value
           .trim(),
 
       gameCategory:
         document
-          .getElementById("gameCategory")
+          .getElementById(
+            "gameCategory"
+          )
           .value,
 
       userEmail:
         document
-          .getElementById("userEmail")
+          .getElementById(
+            "userEmail"
+          )
           .value
           .trim(),
 
       userGithub:
         document
-          .getElementById("userGithub")
+          .getElementById(
+            "userGithub"
+          )
           .value
           .trim(),
 
@@ -554,7 +2128,9 @@ Press Cancel to do nothing.`
 
       gameCode:
         document
-          .getElementById("gameCode")
+          .getElementById(
+            "gameCode"
+          )
           .value,
 
       consent:
@@ -564,18 +2140,18 @@ Press Cancel to do nothing.`
 
 
     /*
-    ======================================================
+    ========================================================
     SAVE TRACKING INFO
-    ======================================================
+    ========================================================
     */
 
     savePendingSubmission();
 
 
     /*
-    ======================================================
+    ========================================================
     SHOW WAITING PAGE
-    ======================================================
+    ========================================================
     */
 
     submissionIdElement.textContent =
@@ -589,9 +2165,9 @@ Press Cancel to do nothing.`
 
 
     /*
-    ======================================================
+    ========================================================
     DISABLE BUTTON
-    ======================================================
+    ========================================================
     */
 
     submitButton.disabled =
@@ -602,9 +2178,9 @@ Press Cancel to do nothing.`
 
 
     /*
-    ======================================================
+    ========================================================
     CREATE HIDDEN IFRAME
-    ======================================================
+    ========================================================
     */
 
     const iframeName =
@@ -621,8 +2197,8 @@ Press Cancel to do nothing.`
     iframe.name =
       iframeName;
 
-    iframe.style.display =
-      "none";
+    iframe.className =
+      "qpg-hidden-frame";
 
 
     document.body.appendChild(
@@ -631,16 +2207,9 @@ Press Cancel to do nothing.`
 
 
     /*
-    ======================================================
+    ========================================================
     CREATE POST FORM
-    ======================================================
-
-    IMPORTANT:
-
-    The game code is placed into the POST BODY.
-
-    It is NOT placed into the URL.
-    ======================================================
+    ========================================================
     */
 
     const postForm =
@@ -663,13 +2232,13 @@ Press Cancel to do nothing.`
 
 
     /*
-    ======================================================
+    ========================================================
     ADD FIELDS
-    ======================================================
+    ========================================================
     */
 
     Object.keys(data).forEach(
-      function(key){
+      function(key) {
 
         const input =
           document.createElement(
@@ -703,30 +2272,35 @@ Press Cancel to do nothing.`
 
 
     /*
-    ======================================================
+    ========================================================
     SEND POST
-    ======================================================
+    ========================================================
     */
 
     postForm.submit();
 
 
     /*
-    ======================================================
+    ========================================================
     CLEAN UP AFTER REQUEST
-    ======================================================
+    ========================================================
     */
 
     setTimeout(
-      function(){
+      function() {
 
-        try{
+        try {
+
           postForm.remove();
-        }catch(error){}
 
-        try{
+        } catch (error) {}
+
+
+        try {
+
           iframe.remove();
-        }catch(error){}
+
+        } catch (error) {}
 
       },
       30000
@@ -734,16 +2308,16 @@ Press Cancel to do nothing.`
 
 
     /*
-    ======================================================
+    ========================================================
     START STATUS CHECKING
-    ======================================================
+    ========================================================
     */
 
     statusAttempts = 0;
 
 
     setTimeout(
-      function(){
+      function() {
 
         checkSubmissionStatus();
 
@@ -756,17 +2330,17 @@ Press Cancel to do nothing.`
 
 
 /*
-==========================================================
+============================================================
 STATUS CHECK
-==========================================================
+============================================================
 */
 
-function checkSubmissionStatus(){
+function checkSubmissionStatus() {
 
-  if(
+  if (
     !currentSubmissionId ||
     !currentStatusToken
-  ){
+  ) {
 
     return;
 
@@ -782,7 +2356,7 @@ function checkSubmissionStatus(){
     "_" +
     Math.random()
       .toString(36)
-      .substring(2,8);
+      .substring(2, 8);
 
 
   let finished =
@@ -796,9 +2370,9 @@ function checkSubmissionStatus(){
   */
 
   window[callbackName] =
-    function(result){
+    function(result) {
 
-      if(finished){
+      if (finished) {
 
         return;
 
@@ -815,14 +2389,12 @@ function checkSubmissionStatus(){
 
 
       /*
-      ====================================================
+      ======================================================
       INVALID RESPONSE
-      ====================================================
+      ======================================================
       */
 
-      if(
-        !result
-      ){
+      if (!result) {
 
         scheduleNextStatusCheck();
 
@@ -832,28 +2404,23 @@ function checkSubmissionStatus(){
 
 
       /*
-      ====================================================
+      ======================================================
       SUBMISSION NOT FOUND
-      ====================================================
-
-      This can happen while Google Apps Script is still
-      processing the POST.
-
-      Give it several attempts before showing an error.
-      ====================================================
+      ======================================================
       */
 
-      if(
+      if (
         result.ok === false
-      ){
+      ) {
 
-        if(
+        if (
           statusAttempts >= 6
-        ){
+        ) {
 
           showOnly(
             "form"
           );
+
 
           submitButton.disabled =
             false;
@@ -863,9 +2430,7 @@ function checkSubmissionStatus(){
 
 
           showError(
-
             "We could not find your submission on the server. Please check your Google Apps Script deployment and try again."
-
           );
 
 
@@ -884,15 +2449,15 @@ function checkSubmissionStatus(){
 
 
       /*
-      ====================================================
+      ======================================================
       APPROVED
-      ====================================================
+      ======================================================
       */
 
-      if(
+      if (
         result.status ===
         "approved"
-      ){
+      ) {
 
         const gameName =
           result.gameName ||
@@ -925,15 +2490,15 @@ function checkSubmissionStatus(){
 
 
       /*
-      ====================================================
+      ======================================================
       DECLINED
-      ====================================================
+      ======================================================
       */
 
-      if(
+      if (
         result.status ===
         "declined"
-      ){
+      ) {
 
         const reason =
           result.reason
@@ -965,9 +2530,9 @@ function checkSubmissionStatus(){
 
 
       /*
-      ====================================================
+      ======================================================
       STILL PENDING
-      ====================================================
+      ======================================================
       */
 
       scheduleNextStatusCheck();
@@ -993,16 +2558,7 @@ function checkSubmissionStatus(){
 
   /*
   ========================================================
-  IMPORTANT
-
-  The status request contains ONLY:
-
-  - action
-  - submission ID
-  - random status token
-  - callback
-
-  It does NOT contain the game code.
+  STATUS REQUEST
   ========================================================
   */
 
@@ -1029,9 +2585,9 @@ function checkSubmissionStatus(){
 
 
   script.onerror =
-    function(){
+    function() {
 
-      if(finished){
+      if (finished) {
 
         return;
 
@@ -1064,9 +2620,9 @@ function checkSubmissionStatus(){
   */
 
   setTimeout(
-    function(){
+    function() {
 
-      if(finished){
+      if (finished) {
 
         return;
 
@@ -1092,14 +2648,14 @@ function checkSubmissionStatus(){
 
 
 /*
-==========================================================
+============================================================
 NEXT STATUS CHECK
-==========================================================
+============================================================
 */
 
-function scheduleNextStatusCheck(){
+function scheduleNextStatusCheck() {
 
-  if(statusTimer){
+  if (statusTimer) {
 
     clearTimeout(
       statusTimer
@@ -1110,7 +2666,7 @@ function scheduleNextStatusCheck(){
 
   statusTimer =
     setTimeout(
-      function(){
+      function() {
 
         checkSubmissionStatus();
 
@@ -1122,14 +2678,14 @@ function scheduleNextStatusCheck(){
 
 
 /*
-==========================================================
+============================================================
 STOP STATUS POLLING
-==========================================================
+============================================================
 */
 
-function stopStatusPolling(){
+function stopStatusPolling() {
 
-  if(statusTimer){
+  if (statusTimer) {
 
     clearTimeout(
       statusTimer
@@ -1144,14 +2700,14 @@ function stopStatusPolling(){
 
 
 /*
-==========================================================
+============================================================
 CLEAN JSONP
-==========================================================
+============================================================
 */
 
 function cleanupJSONP(
   callbackName
-){
+) {
 
   const script =
     document.getElementById(
@@ -1159,45 +2715,43 @@ function cleanupJSONP(
     );
 
 
-  if(script){
+  if (script) {
 
     script.remove();
 
   }
 
 
-  try{
+  try {
 
     delete window[
       callbackName
     ];
 
-  }catch(error){}
+  } catch (error) {}
 
 }
 
 
 /*
-==========================================================
+============================================================
 RESUME AFTER PAGE RELOAD
-==========================================================
-
-If someone submits a game and accidentally refreshes the
-page, the browser can continue checking the submission.
-==========================================================
+============================================================
 */
 
 window.addEventListener(
   "DOMContentLoaded",
-  function(){
+  function() {
 
     const pending =
       loadPendingSubmission();
 
 
-    if(
-      !pending
-    ){
+    if (!pending) {
+
+      showOnly(
+        "form"
+      );
 
       return;
 
@@ -1233,7 +2787,7 @@ window.addEventListener(
 
 
     setTimeout(
-      function(){
+      function() {
 
         checkSubmissionStatus();
 
@@ -1244,4 +2798,19 @@ window.addEventListener(
   }
 );
 
+
+/*
+============================================================
+INITIAL PAGE
+============================================================
+*/
+
+showOnly("form");
+
+
 </script>
+
+
+</body>
+
+</html>
