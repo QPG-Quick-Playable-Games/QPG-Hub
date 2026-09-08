@@ -3118,78 +3118,38 @@ the browser can continue checking the submission.
 ============================================================
 */
 
+/*
+==========================================================
+QPG SUBMIT PAGE START
+==========================================================
+
+Always start on the submission form.
+
+Do NOT automatically restore an old submission when
+the page is opened.
+
+==========================================================
+*/
+
 window.addEventListener(
-
   "DOMContentLoaded",
-
   function(){
 
-    /*
-    Always start with the actual form.
-    */
+    currentSubmissionId = null;
+    currentStatusToken = null;
 
-    showOnly(
-      "form"
-    );
+    stopStatusPolling();
 
+    clearPendingSubmission();
 
-    const pending =
-      loadPendingSubmission();
+    showOnly("form");
 
-
-    if(!pending){
-
-      return;
-
-    }
-
-
-    currentSubmissionId =
-      pending.id;
-
-
-    currentStatusToken =
-      pending.token;
-
-
-    submissionIdElement.textContent =
-
-      "Submission ID: " +
-
-      currentSubmissionId;
-
-
-    showOnly(
-      "waiting"
-    );
-
-
-    submitButton.disabled =
-      true;
-
+    submitButton.disabled = false;
 
     submitButton.textContent =
-      "SUBMISSION IN REVIEW";
-
-
-    statusAttempts =
-      0;
-
-
-    setTimeout(
-
-      function(){
-
-        checkSubmissionStatus();
-
-      },
-
-      2000
-
-    );
+      "📤 Submit for Verification";
 
   }
-
 );
 
 </script>
