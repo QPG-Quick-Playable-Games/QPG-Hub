@@ -1,3 +1,4 @@
+```javascript
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
 
 import {
@@ -20,9 +21,12 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 
 
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// =====================================================
+// FIREBASE CONFIG
+// =====================================================
+
 const firebaseConfig = {
-  apiKey: "AIzaSyCaBL1WYyyZRGA0bCc7bkN7nWVPSVqHQYs",
+  apiKey: "YOUR_CURRENT_FIREBASE_API_KEY",
   authDomain: "qpg-hub.firebaseapp.com",
   projectId: "qpg-hub",
   storageBucket: "qpg-hub.firebasestorage.app",
@@ -70,9 +74,6 @@ const gameCountEl =
 const descriptionMeta =
   document.getElementById("page-description");
 
-const accountPanel =
-  document.getElementById("qpg-account-panel");
-
 const signedOutPanel =
   document.getElementById("qpg-signed-out");
 
@@ -107,8 +108,8 @@ const saveStatus =
 
 let activeCat = "all";
 let currentUser = null;
-let progressLoaded = false;
 let saveTimer = null;
+let progressLoaded = false;
 
 
 // =====================================================
@@ -125,7 +126,7 @@ if (descriptionMeta) {
   descriptionMeta.setAttribute(
     "content",
     totalGames +
-      "bite-size browser games. Sign in to save your QPG progress."
+      " bite-size browser games. Sign in to save your QPG progress."
   );
 }
 
@@ -135,6 +136,7 @@ if (descriptionMeta) {
 // =====================================================
 
 pills.forEach(function (pill) {
+
   const cat = pill.dataset.cat;
   const count = pill.querySelector(".count");
 
@@ -158,13 +160,16 @@ pills.forEach(function (pill) {
 // =====================================================
 
 function applyFilter() {
-  const q = search
-    ? search.value.trim().toLowerCase()
-    : "";
+
+  const q =
+    search
+      ? search.value.trim().toLowerCase()
+      : "";
 
   let visible = 0;
 
   cards.forEach(function (card) {
+
     const matchesCat =
       activeCat === "all" ||
       card.dataset.cat === activeCat;
@@ -179,7 +184,8 @@ function applyFilter() {
     const show =
       matchesCat && matchesQuery;
 
-    card.style.display = show ? "" : "none";
+    card.style.display =
+      show ? "" : "none";
 
     if (show) {
       visible++;
@@ -187,22 +193,29 @@ function applyFilter() {
   });
 
   if (resultsCount) {
+
     resultsCount.textContent =
       visible +
       (visible === 1 ? " game" : " games");
   }
 
   if (visible === 0) {
+
     if (emptyState) {
       emptyState.hidden = false;
     }
 
     if (emptyQuery) {
+
       emptyQuery.textContent =
         q ||
-        (activeCat !== "all" ? activeCat : "");
+        (activeCat !== "all"
+          ? activeCat
+          : "");
     }
+
   } else {
+
     if (emptyState) {
       emptyState.hidden = true;
     }
@@ -215,20 +228,25 @@ function applyFilter() {
 // =====================================================
 
 pills.forEach(function (pill) {
-  pill.addEventListener("click", function () {
 
-    pills.forEach(function (p) {
-      p.classList.remove("active");
-    });
+  pill.addEventListener(
+    "click",
+    function () {
 
-    pill.classList.add("active");
+      pills.forEach(function (p) {
+        p.classList.remove("active");
+      });
 
-    activeCat = pill.dataset.cat;
+      pill.classList.add("active");
 
-    applyFilter();
+      activeCat =
+        pill.dataset.cat;
 
-    scheduleProgressSave();
-  });
+      applyFilter();
+
+      scheduleProgressSave();
+    }
+  );
 });
 
 
@@ -237,10 +255,16 @@ pills.forEach(function (pill) {
 // =====================================================
 
 if (search) {
-  search.addEventListener("input", function () {
-    applyFilter();
-    scheduleProgressSave();
-  });
+
+  search.addEventListener(
+    "input",
+    function () {
+
+      applyFilter();
+
+      scheduleProgressSave();
+    }
+  );
 }
 
 
@@ -261,13 +285,17 @@ const githubProvider =
 
 async function saveHubProgress(extraData = {}) {
 
+  // IMPORTANT:
+  // Guests NEVER save anything.
+
   if (!currentUser) {
-    return;
+    return false;
   }
 
   try {
 
     const data = {
+
       search:
         search
           ? search.value
@@ -283,26 +311,40 @@ async function saveHubProgress(extraData = {}) {
     };
 
     await setDoc(
-      doc(db, "users", currentUser.uid),
+      doc(
+        db,
+        "users",
+        currentUser.uid
+      ),
       {
         profile: {
-          uid: currentUser.uid,
+
+          uid:
+            currentUser.uid,
+
           displayName:
             currentUser.displayName || "",
+
           email:
             currentUser.email || "",
+
           photoURL:
             currentUser.photoURL || ""
         },
 
-        hubProgress: data
+        hubProgress:
+          data
       },
       {
         merge: true
       }
     );
 
-    showSaveStatus("Progress saved");
+    showSaveStatus(
+      "Progress saved"
+    );
+
+    return true;
 
   } catch (error) {
 
@@ -311,7 +353,11 @@ async function saveHubProgress(extraData = {}) {
       error
     );
 
-    showSaveStatus("Couldn't save progress");
+    showSaveStatus(
+      "Couldn't save progress"
+    );
+
+    return false;
   }
 }
 
@@ -320,7 +366,11 @@ async function saveHubProgress(extraData = {}) {
 // DEBOUNCED SAVE
 // =====================================================
 
-function scheduleProgressSave(extraData = {}) {
+function scheduleProgressSave(
+  extraData = {}
+) {
+
+  // Absolutely no guest saving.
 
   if (!currentUser) {
     return;
@@ -328,9 +378,17 @@ function scheduleProgressSave(extraData = {}) {
 
   clearTimeout(saveTimer);
 
-  saveTimer = setTimeout(function () {
-    saveHubProgress(extraData);
-  }, 500);
+  saveTimer =
+    setTimeout(
+      function () {
+
+        saveHubProgress(
+          extraData
+        );
+
+      },
+      500
+    );
 }
 
 
@@ -348,11 +406,19 @@ async function loadHubProgress(user) {
 
     const snapshot =
       await getDoc(
-        doc(db, "users", user.uid)
+        doc(
+          db,
+          "users",
+          user.uid
+        )
       );
 
     if (!snapshot.exists()) {
+
       progressLoaded = true;
+
+      buildRecommendations();
+
       return;
     }
 
@@ -362,15 +428,21 @@ async function loadHubProgress(user) {
     const progress =
       data.hubProgress || {};
 
+
     // Restore search
+
     if (
       search &&
       typeof progress.search === "string"
     ) {
-      search.value = progress.search;
+
+      search.value =
+        progress.search;
     }
 
+
     // Restore category
+
     if (
       progress.activeCategory &&
       document.querySelector(
@@ -383,9 +455,13 @@ async function loadHubProgress(user) {
       activeCat =
         progress.activeCategory;
 
-      pills.forEach(function (pill) {
-        pill.classList.remove("active");
-      });
+      pills.forEach(
+        function (pill) {
+          pill.classList.remove(
+            "active"
+          );
+        }
+      );
 
       const matchingPill =
         document.querySelector(
@@ -395,15 +471,23 @@ async function loadHubProgress(user) {
         );
 
       if (matchingPill) {
-        matchingPill.classList.add("active");
+
+        matchingPill.classList.add(
+          "active"
+        );
       }
     }
+
 
     applyFilter();
 
     progressLoaded = true;
 
-    showSaveStatus("Progress loaded");
+    buildRecommendations();
+
+    showSaveStatus(
+      "Progress loaded"
+    );
 
   } catch (error) {
 
@@ -412,13 +496,15 @@ async function loadHubProgress(user) {
       error
     );
 
-    showSaveStatus("Couldn't load progress");
+    showSaveStatus(
+      "Couldn't load progress"
+    );
   }
 }
 
 
 // =====================================================
-// SHOW SAVE STATUS
+// SAVE STATUS
 // =====================================================
 
 function showSaveStatus(message) {
@@ -427,16 +513,23 @@ function showSaveStatus(message) {
     return;
   }
 
-  saveStatus.textContent = message;
+  saveStatus.textContent =
+    message;
 
   clearTimeout(
     showSaveStatus.timer
   );
 
   showSaveStatus.timer =
-    setTimeout(function () {
-      saveStatus.textContent = "";
-    }, 2500);
+    setTimeout(
+      function () {
+
+        saveStatus.textContent =
+          "";
+
+      },
+      2500
+    );
 }
 
 
@@ -460,7 +553,6 @@ async function signIn(provider) {
       error
     );
 
-    // Popup was blocked.
     if (
       error.code ===
       "auth/popup-blocked"
@@ -504,7 +596,10 @@ async function signIn(provider) {
 
     alert(
       "Sign-in failed: " +
-      (error.message || "Unknown error")
+      (
+        error.message ||
+        "Unknown error"
+      )
     );
   }
 }
@@ -519,7 +614,11 @@ if (googleButton) {
   googleButton.addEventListener(
     "click",
     function () {
-      signIn(googleProvider);
+
+      signIn(
+        googleProvider
+      );
+
     }
   );
 }
@@ -534,7 +633,11 @@ if (githubButton) {
   githubButton.addEventListener(
     "click",
     function () {
-      signIn(githubProvider);
+
+      signIn(
+        githubProvider
+      );
+
     }
   );
 }
@@ -585,16 +688,21 @@ function updateAccountUI(user) {
 
   if (user) {
 
-    signedOutPanel.hidden = true;
-    signedInPanel.hidden = false;
+    signedOutPanel.hidden =
+      true;
+
+    signedInPanel.hidden =
+      false;
 
     if (userName) {
+
       userName.textContent =
         user.displayName ||
         "QPG Player";
     }
 
     if (userEmail) {
+
       userEmail.textContent =
         user.email || "";
     }
@@ -618,16 +726,540 @@ function updateAccountUI(user) {
 
   } else {
 
-    signedOutPanel.hidden = false;
-    signedInPanel.hidden = true;
+    signedOutPanel.hidden =
+      false;
+
+    signedInPanel.hidden =
+      true;
 
     if (userName) {
-      userName.textContent = "";
+      userName.textContent =
+        "";
     }
 
     if (userEmail) {
-      userEmail.textContent = "";
+      userEmail.textContent =
+        "";
     }
+  }
+}
+
+
+// =====================================================
+// GET GAME INFORMATION
+// =====================================================
+
+function getGameInfo(card) {
+
+  return {
+
+    title:
+      card.querySelector("h2")
+        ?.textContent
+        ?.trim() ||
+      "Unknown Game",
+
+    href:
+      card.getAttribute("href") ||
+      "",
+
+    category:
+      card.dataset.cat ||
+      "all",
+
+    description:
+      card.querySelector("p")
+        ?.textContent
+        ?.trim() ||
+      "",
+
+    icon:
+      card.querySelector(".icon")
+        ?.textContent
+        ?.trim() ||
+      "🎮"
+  };
+}
+
+
+// =====================================================
+// RECOMMENDATION SYSTEM
+// =====================================================
+
+function getRecommendations(
+  history = [],
+  limit = 6
+) {
+
+  // Guests get no personalized recommendations.
+
+  if (!currentUser) {
+    return [];
+  }
+
+  const playedTitles =
+    new Set(
+      history.map(function (item) {
+        return item.title;
+      })
+    );
+
+  const categoryScores = {};
+
+  history.forEach(
+    function (item) {
+
+      const category =
+        item.category ||
+        "all";
+
+      categoryScores[category] =
+        (categoryScores[category] || 0) +
+        1;
+    }
+  );
+
+  const available =
+    cards
+      .map(getGameInfo)
+      .filter(function (game) {
+
+        return !playedTitles.has(
+          game.title
+        );
+
+      });
+
+  available.sort(
+    function (a, b) {
+
+      const aScore =
+        categoryScores[a.category] ||
+        0;
+
+      const bScore =
+        categoryScores[b.category] ||
+        0;
+
+      if (aScore !== bScore) {
+        return bScore - aScore;
+      }
+
+      return a.title.localeCompare(
+        b.title
+      );
+    }
+  );
+
+  return available.slice(
+    0,
+    limit
+  );
+}
+
+
+// =====================================================
+// CREATE RECOMMENDATIONS SECTION
+// =====================================================
+
+function ensureRecommendationSection() {
+
+  let section =
+    document.getElementById(
+      "qpg-recommendations"
+    );
+
+  if (section) {
+    return section;
+  }
+
+  const gamesContainer =
+    document.getElementById(
+      "games"
+    );
+
+  if (!gamesContainer) {
+    return null;
+  }
+
+  section =
+    document.createElement(
+      "section"
+    );
+
+  section.id =
+    "qpg-recommendations";
+
+  section.style.margin =
+    "45px 0 35px";
+
+  section.innerHTML = `
+    <div style="
+      border-top:1px solid var(--line);
+      padding-top:30px;
+    ">
+
+      <h2 style="
+        font-family:var(--font-display);
+        font-size:24px;
+        color:var(--ink);
+        margin-bottom:8px;
+      ">
+        🎯 Recommended For You
+      </h2>
+
+      <p id="qpg-recommendation-subtitle" style="
+        color:var(--ink-muted);
+        margin-bottom:20px;
+        font-size:14px;
+      ">
+        Games picked from your QPG activity.
+      </p>
+
+      <div id="qpg-recommendation-list" style="
+        display:grid;
+        grid-template-columns:
+          repeat(auto-fit,minmax(220px,1fr));
+        gap:14px;
+      "></div>
+
+    </div>
+  `;
+
+  gamesContainer.parentNode.insertBefore(
+    section,
+    gamesContainer
+  );
+
+  return section;
+}
+
+
+// =====================================================
+// DISPLAY RECOMMENDATIONS
+// =====================================================
+
+function displayRecommendations(
+  history = []
+) {
+
+  if (!currentUser) {
+    return;
+  }
+
+  const section =
+    ensureRecommendationSection();
+
+  if (!section) {
+    return;
+  }
+
+  const list =
+    document.getElementById(
+      "qpg-recommendation-list"
+    );
+
+  const subtitle =
+    document.getElementById(
+      "qpg-recommendation-subtitle"
+    );
+
+  if (!list) {
+    return;
+  }
+
+  const recommendations =
+    getRecommendations(
+      history,
+      6
+    );
+
+  list.innerHTML = "";
+
+  if (
+    recommendations.length === 0
+  ) {
+
+    if (subtitle) {
+
+      subtitle.textContent =
+        "You've played everything! More games coming soon.";
+    }
+
+    return;
+  }
+
+  if (subtitle) {
+
+    if (history.length > 0) {
+
+      subtitle.textContent =
+        "Based on the games you've played.";
+
+    } else {
+
+      subtitle.textContent =
+        "Start playing to make these recommendations smarter.";
+    }
+  }
+
+  recommendations.forEach(
+    function (game) {
+
+      const link =
+        document.createElement(
+          "a"
+        );
+
+      link.href =
+        game.href;
+
+      link.className =
+        "card qpg-recommendation-card";
+
+      link.style.textDecoration =
+        "none";
+
+      link.innerHTML = `
+
+        <span class="cat-tag">
+          ${escapeHTML(
+            getCategoryName(
+              game.category
+            )
+          )}
+        </span>
+
+        <span class="icon">
+          ${escapeHTML(game.icon)}
+        </span>
+
+        <h2>
+          ${escapeHTML(game.title)}
+        </h2>
+
+        <p>
+          ${escapeHTML(
+            game.description
+          )}
+        </p>
+
+      `;
+
+      link.addEventListener(
+        "click",
+        async function (event) {
+
+          if (!currentUser) {
+            return;
+          }
+
+          event.preventDefault();
+
+          await recordGamePlayed(
+            game
+          );
+
+          window.location.href =
+            game.href;
+        }
+      );
+
+      list.appendChild(
+        link
+      );
+    }
+  );
+}
+
+
+// =====================================================
+// BUILD RECOMMENDATIONS
+// =====================================================
+
+async function buildRecommendations() {
+
+  if (!currentUser) {
+    return;
+  }
+
+  try {
+
+    const snapshot =
+      await getDoc(
+        doc(
+          db,
+          "users",
+          currentUser.uid
+        )
+      );
+
+    if (!snapshot.exists()) {
+
+      displayRecommendations(
+        []
+      );
+
+      return;
+    }
+
+    const data =
+      snapshot.data();
+
+    const history =
+      data.playHistory || [];
+
+    displayRecommendations(
+      history
+    );
+
+  } catch (error) {
+
+    console.error(
+      "Recommendation error:",
+      error
+    );
+  }
+}
+
+
+// =====================================================
+// RECORD GAME PLAYED
+// =====================================================
+
+async function recordGamePlayed(
+  game
+) {
+
+  // Guests NEVER record history.
+
+  if (!currentUser) {
+    return false;
+  }
+
+  try {
+
+    const userRef =
+      doc(
+        db,
+        "users",
+        currentUser.uid
+      );
+
+    const snapshot =
+      await getDoc(
+        userRef
+      );
+
+    let history = [];
+
+    if (snapshot.exists()) {
+
+      const data =
+        snapshot.data();
+
+      if (
+        Array.isArray(
+          data.playHistory
+        )
+      ) {
+
+        history =
+          data.playHistory;
+      }
+    }
+
+    const playedAt =
+      new Date().toISOString();
+
+    const newEntry = {
+
+      title:
+        game.title,
+
+      href:
+        game.href,
+
+      category:
+        game.category,
+
+      icon:
+        game.icon,
+
+      playedAt:
+        playedAt
+    };
+
+    history =
+      history.filter(
+        function (item) {
+
+          return item.title !==
+            game.title;
+
+        }
+      );
+
+    history.unshift(
+      newEntry
+    );
+
+    // Keep the latest 50 games.
+
+    history =
+      history.slice(
+        0,
+        50
+      );
+
+    await setDoc(
+      userRef,
+      {
+
+        playHistory:
+          history,
+
+        hubProgress: {
+
+          lastPlayed: {
+
+            title:
+              game.title,
+
+            href:
+              game.href,
+
+            category:
+              game.category,
+
+            playedAt:
+              playedAt
+          },
+
+          updatedAt:
+            serverTimestamp()
+        }
+
+      },
+      {
+        merge: true
+      }
+    );
+
+    displayRecommendations(
+      history
+    );
+
+    return true;
+
+  } catch (error) {
+
+    console.error(
+      "Could not record game:",
+      error
+    );
+
+    return false;
   }
 }
 
@@ -636,60 +1268,92 @@ function updateAccountUI(user) {
 // GAME CARD CLICK = SAVE LAST PLAYED
 // =====================================================
 
-cards.forEach(function (card) {
+cards.forEach(
+  function (card) {
 
-  card.addEventListener(
-    "click",
-    async function (event) {
+    card.addEventListener(
+      "click",
+      async function (event) {
 
-      if (!currentUser) {
-        return;
-      }
+        // Guest:
+        // DO NOT prevent normal navigation.
+        // DO NOT save anything.
 
-      event.preventDefault();
-
-      const title =
-        card.querySelector("h2")
-          ?.textContent
-          ?.trim() ||
-        "Unknown Game";
-
-      const href =
-        card.getAttribute("href") ||
-        "";
-
-      await saveHubProgress({
-        lastPlayed: {
-          title: title,
-          href: href,
-          playedAt:
-            new Date().toISOString()
+        if (!currentUser) {
+          return;
         }
-      });
 
-      window.location.href = href;
-    }
-  );
-});
+        event.preventDefault();
+
+        const game =
+          getGameInfo(card);
+
+        await recordGamePlayed(
+          game
+        );
+
+        await saveHubProgress({
+
+          lastPlayed: {
+
+            title:
+              game.title,
+
+            href:
+              game.href,
+
+            category:
+              game.category,
+
+            playedAt:
+              new Date().toISOString()
+          }
+
+        });
+
+        window.location.href =
+          game.href;
+      }
+    );
+  }
+);
 
 
 // =====================================================
-// PUBLIC QPG CLOUD API
+// QPG CLOUD API
 // =====================================================
-// Games can later use this to save REAL game data.
-// Each individual game will need the Firebase connection
-// added to its own code for actual game-state saving.
+// Individual QPG games can use this API.
+//
+// IMPORTANT:
+// Nothing is saved for guests.
+// A signed-in Firebase user is required.
 // =====================================================
 
 window.QPGCloud = {
 
+  // ---------------------------------------------------
+  // USER
+  // ---------------------------------------------------
+
   getUser: function () {
+
     return auth.currentUser;
   },
 
+
+  // ---------------------------------------------------
+  // SIGNED IN?
+  // ---------------------------------------------------
+
   isSignedIn: function () {
+
     return !!auth.currentUser;
   },
+
+
+  // ---------------------------------------------------
+  // SAVE GAME PROGRESS
+  // ---------------------------------------------------
 
   async saveGameProgress(
     gameId,
@@ -699,7 +1363,13 @@ window.QPGCloud = {
     const user =
       auth.currentUser;
 
+    // Guest = NEVER SAVE
+
     if (!user) {
+      return false;
+    }
+
+    if (!gameId) {
       return false;
     }
 
@@ -712,12 +1382,21 @@ window.QPGCloud = {
           user.uid
         ),
         {
+
           games: {
-            [gameId]: gameData
+
+            [gameId]: {
+
+              ...gameData,
+
+              savedAt:
+                serverTimestamp()
+            }
           },
 
           updatedAt:
             serverTimestamp()
+
         },
         {
           merge: true
@@ -737,6 +1416,11 @@ window.QPGCloud = {
     }
   },
 
+
+  // ---------------------------------------------------
+  // LOAD GAME PROGRESS
+  // ---------------------------------------------------
+
   async loadGameProgress(
     gameId
   ) {
@@ -744,7 +1428,13 @@ window.QPGCloud = {
     const user =
       auth.currentUser;
 
+    // Guest = NEVER LOAD SAVED PROGRESS
+
     if (!user) {
+      return null;
+    }
+
+    if (!gameId) {
       return null;
     }
 
@@ -770,6 +1460,7 @@ window.QPGCloud = {
         !data.games ||
         !data.games[gameId]
       ) {
+
         return null;
       }
 
@@ -784,8 +1475,129 @@ window.QPGCloud = {
 
       return null;
     }
+  },
+
+
+  // ---------------------------------------------------
+  // DELETE A GAME SAVE
+  // ---------------------------------------------------
+
+  async deleteGameProgress(
+    gameId
+  ) {
+
+    const user =
+      auth.currentUser;
+
+    if (!user) {
+      return false;
+    }
+
+    try {
+
+      const snapshot =
+        await getDoc(
+          doc(
+            db,
+            "users",
+            user.uid
+          )
+        );
+
+      if (!snapshot.exists()) {
+        return false;
+      }
+
+      const data =
+        snapshot.data();
+
+      const games =
+        data.games || {};
+
+      delete games[gameId];
+
+      await setDoc(
+        doc(
+          db,
+          "users",
+          user.uid
+        ),
+        {
+          games:
+            games,
+
+          updatedAt:
+            serverTimestamp()
+        },
+        {
+          merge: true
+        }
+      );
+
+      return true;
+
+    } catch (error) {
+
+      console.error(
+        "Game progress delete failed:",
+        error
+      );
+
+      return false;
+    }
   }
 };
+
+
+// =====================================================
+// CATEGORY NAME
+// =====================================================
+
+function getCategoryName(
+  category
+) {
+
+  const names = {
+
+    dodge:
+      "Dodge & Dash",
+
+    rhythm:
+      "Rhythm & Reflex",
+
+    puzzle:
+      "Puzzle & Brain",
+
+    party:
+      "Party",
+
+    "3d":
+      "3D Games"
+  };
+
+  return (
+    names[category] ||
+    "QPG Games"
+  );
+}
+
+
+// =====================================================
+// HTML ESCAPE
+// =====================================================
+
+function escapeHTML(value) {
+
+  const div =
+    document.createElement(
+      "div"
+    );
+
+  div.textContent =
+    String(value);
+
+  return div.innerHTML;
+}
 
 
 // =====================================================
@@ -793,23 +1605,30 @@ window.QPGCloud = {
 // =====================================================
 
 getRedirectResult(auth)
-  .then(function (result) {
+  .then(
+    function (result) {
 
-    if (result && result.user) {
+      if (
+        result &&
+        result.user
+      ) {
 
-      console.log(
-        "QPG redirect sign-in successful."
+        console.log(
+          "QPG redirect sign-in successful."
+        );
+      }
+
+    }
+  )
+  .catch(
+    function (error) {
+
+      console.error(
+        "Redirect result error:",
+        error
       );
     }
-
-  })
-  .catch(function (error) {
-
-    console.error(
-      "Redirect result error:",
-      error
-    );
-  });
+  );
 
 
 // =====================================================
@@ -820,15 +1639,26 @@ onAuthStateChanged(
   auth,
   async function (user) {
 
-    currentUser = user;
+    currentUser =
+      user;
 
-    updateAccountUI(user);
+    updateAccountUI(
+      user
+    );
+
 
     if (user) {
 
-      await loadHubProgress(user);
+      // Signed in:
+      // Load cloud data.
 
-      // Create/update user profile.
+      await loadHubProgress(
+        user
+      );
+
+
+      // Create/update profile.
+
       try {
 
         await setDoc(
@@ -838,18 +1668,25 @@ onAuthStateChanged(
             user.uid
           ),
           {
+
             profile: {
-              uid: user.uid,
+
+              uid:
+                user.uid,
+
               displayName:
                 user.displayName || "",
+
               email:
                 user.email || "",
+
               photoURL:
                 user.photoURL || ""
             },
 
             lastLoginAt:
               serverTimestamp()
+
           },
           {
             merge: true
@@ -866,18 +1703,49 @@ onAuthStateChanged(
 
     } else {
 
-      progressLoaded = false;
+      // =================================================
+      // GUEST MODE
+      // =================================================
+      //
+      // Absolutely no local saving.
+      // Absolutely no Firebase saving.
+      // Absolutely no recommendation history.
+      //
+      // The user can still search, filter and play.
+      // =================================================
+
+      progressLoaded =
+        false;
+
+      clearTimeout(
+        saveTimer
+      );
 
       showSaveStatus(
         "Guest mode — progress isn't saved"
       );
 
       applyFilter();
+
+      const recommendationSection =
+        document.getElementById(
+          "qpg-recommendations"
+        );
+
+      if (
+        recommendationSection
+      ) {
+
+        recommendationSection.remove();
+      }
     }
   }
 );
 
 
+// =====================================================
 // INITIAL LOAD
+// =====================================================
 
 applyFilter();
+```
