@@ -20,12 +20,9 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 
 
-// =====================================================
-// FIREBASE CONFIG
-// =====================================================
-
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyCaBL1WWyYzRGA0bCc7bkN7nWPSVqHQYs",
+  apiKey: "AIzaSyCaBL1WYyyZRGA0bCc7bkN7nWVPSVqHQYs",
   authDomain: "qpg-hub.firebaseapp.com",
   projectId: "qpg-hub",
   storageBucket: "qpg-hub.firebasestorage.app",
