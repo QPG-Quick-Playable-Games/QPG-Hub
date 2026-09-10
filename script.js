@@ -128,7 +128,7 @@ if (descriptionMeta) {
   descriptionMeta.setAttribute(
     "content",
     totalGames +
-      " bite-size browser games. Sign in to save your QPG progress."
+      "bite-size browser games. Sign in to save your QPG progress."
   );
 }
 
