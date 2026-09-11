@@ -26,7 +26,7 @@ import {
 // =====================================================
 
 const firebaseConfig = {
-  apiKey: "YOUR_CURRENT_FIREBASE_API_KEY",
+  apiKey: "AIzaSyCaBL1WYyyZRGA0bCc7bkN7nWVPSVqHQYs",
   authDomain: "qpg-hub.firebaseapp.com",
   projectId: "qpg-hub",
   storageBucket: "qpg-hub.firebasestorage.app",
