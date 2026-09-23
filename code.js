@@ -67,6 +67,18 @@ public HTML files.
 ============================================================
 */
 
+function login() {
+  adminKey = document.getElementById("adminKey").value.trim();
+
+  if (adminKey === "vcdigital3811") {
+    document.getElementById("loginPage").style.display = "none";
+    document.getElementById("dashboard").classList.add("show");
+    loadSubmissions();
+  } else {
+    document.getElementById("loginError").style.display = "block";
+  }
+}
+
 function setup(){
 
   const props =
