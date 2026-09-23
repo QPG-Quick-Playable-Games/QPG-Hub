@@ -58,50 +58,42 @@ ONE-TIME SETUP
 
 Run setup() manually once from Apps Script.
 
-It will ask you to enter:
+It will store:
 - GitHub token
 - Admin key
 
-The values are stored in Script Properties, NOT in the
-public HTML files.
+The values are stored in Script Properties, NOT in
+the public HTML files.
 ============================================================
 */
 
-function login() {
-  adminKey = document.getElementById("adminKey").value.trim();
-
-  if (adminKey === "vcdigital3811") {
-    document.getElementById("loginPage").style.display = "none";
-    document.getElementById("dashboard").classList.add("show");
-    loadSubmissions();
-  } else {
-    document.getElementById("loginError").style.display = "block";
-  }
-}
-
-function setup(){
+function setup() {
 
   const props =
-    PropertiesService
-      .getScriptProperties();
+    PropertiesService.getScriptProperties();
 
   /*
-  CHANGE THESE TWO VALUES BEFORE RUNNING setup().
+  PUT YOUR REAL GITHUB TOKEN HERE.
+  Do NOT use the admin key here.
   */
 
   const githubToken =
     "PASTE_YOUR_GITHUB_FINE_GRAINED_TOKEN_HERE";
 
-  const adminKey =
-    "CREATE_A_LONG_RANDOM_ADMIN_KEY_HERE";
+  /*
+  YOUR ADMIN LOGIN KEY
+  */
 
-  if(
+  const adminKey =
+    "vcdigital3811";
+
+  if (
     githubToken.includes("PASTE_") ||
-    adminKey.includes("CREATE_")
-  ){
+    !adminKey
+  ) {
 
     throw new Error(
-      "Edit setup() first and enter your private GitHub token and admin key."
+      "Edit setup() first and enter your private GitHub token."
     );
 
   }
@@ -123,7 +115,7 @@ function setup(){
   const existingId =
     props.getProperty("SPREADSHEET_ID");
 
-  if(!existingId){
+  if (!existingId) {
 
     const ss =
       SpreadsheetApp.create(
@@ -174,7 +166,7 @@ WEB APP ENTRY
 ============================================================
 */
 
-function doGet(e){
+function doGet(e) {
 
   const params =
     e && e.parameter
@@ -188,7 +180,7 @@ function doGet(e){
   STATUS LOOKUP
   */
 
-  if(action === "status"){
+  if (action === "status") {
 
     return jsonp(
       getPublicStatus(params),
@@ -201,7 +193,7 @@ function doGet(e){
   ADMIN SUBMISSIONS
   */
 
-  if(action === "list"){
+  if (action === "list") {
 
     return jsonp(
       getAdminSubmissions(params),
@@ -214,7 +206,7 @@ function doGet(e){
   ADMIN DECISION
   */
 
-  if(action === "decide"){
+  if (action === "decide") {
 
     return jsonp(
       processDecision(params),
@@ -224,9 +216,9 @@ function doGet(e){
   }
 
   return output({
-    ok:true,
-    service:"QPG Hub Submission Backend",
-    status:"online"
+    ok: true,
+    service: "QPG Hub Submission Backend",
+    status: "online"
   });
 
 }
@@ -238,11 +230,11 @@ SUBMISSION
 ============================================================
 */
 
-function doPost(e){
+function doPost(e) {
 
-  try{
+  try {
 
-    if(!e || !e.parameter){
+    if (!e || !e.parameter) {
 
       throw new Error(
         "No submission data received."
@@ -253,7 +245,7 @@ function doPost(e){
     const p =
       e.parameter;
 
-    if(p.action !== "submit"){
+    if (p.action !== "submit") {
 
       throw new Error(
         "Invalid submission action."
@@ -276,9 +268,9 @@ function doPost(e){
       "gameCode"
     ];
 
-    required.forEach(function(field){
+    required.forEach(function(field) {
 
-      if(!String(p[field] || "").trim()){
+      if (!String(p[field] || "").trim()) {
 
         throw new Error(
           "Missing field: " + field
@@ -288,10 +280,9 @@ function doPost(e){
 
     });
 
-    if(
-      String(p.consent).toLowerCase()
-      !== "true"
-    ){
+    if (
+      String(p.consent).toLowerCase() !== "true"
+    ) {
 
       throw new Error(
         "Submission permission was not given."
@@ -311,11 +302,11 @@ function doPost(e){
       "3d"
     ];
 
-    if(
+    if (
       allowedCategories.indexOf(
         p.gameCategory
       ) === -1
-    ){
+    ) {
 
       throw new Error(
         "Invalid game category."
@@ -327,10 +318,10 @@ function doPost(e){
     Validate email.
     */
 
-    if(
+    if (
       !/^[^\s@]+@[^\s@]+\.[^\s@]+$/
         .test(p.userEmail)
-    ){
+    ) {
 
       throw new Error(
         "Invalid email address."
@@ -361,43 +352,43 @@ function doPost(e){
 
     const submission = {
 
-      id:id,
+      id: id,
 
       submittedAt:
         submittedAt.toISOString(),
 
-      status:"pending",
+      status: "pending",
 
       userName:
-        clean(p.userName,100),
+        clean(p.userName, 100),
 
       gameName:
-        clean(p.gameName,100),
+        clean(p.gameName, 100),
 
       gameEmoji:
-        clean(p.gameEmoji,8),
+        clean(p.gameEmoji, 8),
 
       gameDescription:
-        clean(p.gameDescription,2000),
+        clean(p.gameDescription, 2000),
 
       gameCategory:
-        clean(p.gameCategory,30),
+        clean(p.gameCategory, 30),
 
       userEmail:
-        clean(p.userEmail,200),
+        clean(p.userEmail, 200),
 
       userGithub:
-        clean(p.userGithub,300),
+        clean(p.userGithub, 300),
 
       gameLink:
-        clean(p.gameLink,500),
+        clean(p.gameLink, 500),
 
       gameCode:
         String(p.gameCode || ""),
 
-      reason:"",
+      reason: "",
 
-      decisionAt:""
+      decisionAt: ""
 
     };
 
@@ -425,7 +416,7 @@ function doPost(e){
       "<h2>Submission received.</h2>"
     );
 
-  }catch(error){
+  } catch (error) {
 
     console.error(error);
 
@@ -448,7 +439,7 @@ SAVE SUBMISSION
 ============================================================
 */
 
-function saveSubmission(submission){
+function saveSubmission(submission) {
 
   const sheet =
     getSheet();
@@ -494,7 +485,7 @@ EMAIL REVIEW TEAM
 ============================================================
 */
 
-function sendReviewEmail(submission){
+function sendReviewEmail(submission) {
 
   const subject =
     "🎮 QPG Game Submission — " +
@@ -600,15 +591,15 @@ GET ADMIN SUBMISSIONS
 ============================================================
 */
 
-function getAdminSubmissions(params){
+function getAdminSubmissions(params) {
 
-  if(
+  if (
     !isAdmin(params.adminKey)
-  ){
+  ) {
 
     return {
-      ok:false,
-      error:"Unauthorized"
+      ok: false,
+      error: "Unauthorized"
     };
 
   }
@@ -620,11 +611,11 @@ function getAdminSubmissions(params){
     sheet.getDataRange()
       .getValues();
 
-  if(values.length <= 1){
+  if (values.length <= 1) {
 
     return {
-      ok:true,
-      submissions:[]
+      ok: true,
+      submissions: []
     };
 
   }
@@ -633,24 +624,50 @@ function getAdminSubmissions(params){
     values.slice(1);
 
   const submissions =
-    rows.map(function(row){
+    rows.map(function(row) {
 
       return {
 
         id: row[0],
-        submittedAt: row[1],
-        status: row[2],
-        userName: row[3],
-        gameName: row[4],
-        gameEmoji: row[5],
-        gameDescription: row[6],
-        gameCategory: row[7],
-        userEmail: row[8],
-        userGithub: row[9],
-        gameLink: row[10],
-        gameCode: row[11],
-        reason: row[12],
-        decisionAt: row[13]
+
+        submittedAt:
+          row[1],
+
+        status:
+          row[2],
+
+        userName:
+          row[3],
+
+        gameName:
+          row[4],
+
+        gameEmoji:
+          row[5],
+
+        gameDescription:
+          row[6],
+
+        gameCategory:
+          row[7],
+
+        userEmail:
+          row[8],
+
+        userGithub:
+          row[9],
+
+        gameLink:
+          row[10],
+
+        gameCode:
+          row[11],
+
+        reason:
+          row[12],
+
+        decisionAt:
+          row[13]
 
       };
 
@@ -658,8 +675,10 @@ function getAdminSubmissions(params){
 
   return {
 
-    ok:true,
-    submissions:submissions
+    ok: true,
+
+    submissions:
+      submissions
 
   };
 
@@ -672,7 +691,7 @@ PUBLIC STATUS
 ============================================================
 */
 
-function getPublicStatus(params){
+function getPublicStatus(params) {
 
   const email =
     String(params.email || "")
@@ -684,10 +703,10 @@ function getPublicStatus(params){
       .trim()
       .toLowerCase();
 
-  if(!email || !gameName){
+  if (!email || !gameName) {
 
     return {
-      ok:false
+      ok: false
     };
 
   }
@@ -699,11 +718,11 @@ function getPublicStatus(params){
     sheet.getDataRange()
       .getValues();
 
-  for(
+  for (
     let i = values.length - 1;
     i >= 1;
     i--
-  ){
+  ) {
 
     const row =
       values[i];
@@ -718,14 +737,14 @@ function getPublicStatus(params){
         .trim()
         .toLowerCase();
 
-    if(
+    if (
       rowEmail === email &&
       rowGame === gameName
-    ){
+    ) {
 
       return {
 
-        ok:true,
+        ok: true,
 
         status:
           String(row[2]),
@@ -744,9 +763,9 @@ function getPublicStatus(params){
 
   return {
 
-    ok:true,
+    ok: true,
 
-    status:"pending"
+    status: "pending"
 
   };
 
@@ -759,15 +778,15 @@ APPROVE / DECLINE
 ============================================================
 */
 
-function processDecision(params){
+function processDecision(params) {
 
-  if(
+  if (
     !isAdmin(params.adminKey)
-  ){
+  ) {
 
     return {
-      ok:false,
-      error:"Unauthorized"
+      ok: false,
+      error: "Unauthorized"
     };
 
   }
@@ -778,14 +797,14 @@ function processDecision(params){
   const decision =
     String(params.status || "");
 
-  if(
+  if (
     decision !== "approved" &&
     decision !== "declined"
-  ){
+  ) {
 
     return {
-      ok:false,
-      error:"Invalid decision."
+      ok: false,
+      error: "Invalid decision."
     };
 
   }
@@ -800,36 +819,62 @@ function processDecision(params){
   let rowNumber = -1;
   let submission = null;
 
-  for(
+  for (
     let i = 1;
     i < values.length;
     i++
-  ){
+  ) {
 
-    if(
-      String(values[i][0])
-      === id
-    ){
+    if (
+      String(values[i][0]) === id
+    ) {
 
       rowNumber =
         i + 1;
 
       submission = {
 
-        id: values[i][0],
-        submittedAt: values[i][1],
-        status: values[i][2],
-        userName: values[i][3],
-        gameName: values[i][4],
-        gameEmoji: values[i][5],
-        gameDescription: values[i][6],
-        gameCategory: values[i][7],
-        userEmail: values[i][8],
-        userGithub: values[i][9],
-        gameLink: values[i][10],
-        gameCode: values[i][11],
-        reason: values[i][12],
-        decisionAt: values[i][13]
+        id:
+          values[i][0],
+
+        submittedAt:
+          values[i][1],
+
+        status:
+          values[i][2],
+
+        userName:
+          values[i][3],
+
+        gameName:
+          values[i][4],
+
+        gameEmoji:
+          values[i][5],
+
+        gameDescription:
+          values[i][6],
+
+        gameCategory:
+          values[i][7],
+
+        userEmail:
+          values[i][8],
+
+        userGithub:
+          values[i][9],
+
+        gameLink:
+          values[i][10],
+
+        gameCode:
+          values[i][11],
+
+        reason:
+          values[i][12],
+
+        decisionAt:
+          values[i][13]
 
       };
 
@@ -839,14 +884,14 @@ function processDecision(params){
 
   }
 
-  if(
+  if (
     !submission ||
     rowNumber === -1
-  ){
+  ) {
 
     return {
-      ok:false,
-      error:"Submission not found."
+      ok: false,
+      error: "Submission not found."
     };
 
   }
@@ -855,12 +900,12 @@ function processDecision(params){
   Prevent double decisions.
   */
 
-  if(
+  if (
     submission.status !== "pending"
-  ){
+  ) {
 
     return {
-      ok:false,
+      ok: false,
       error:
         "This submission has already been decided."
     };
@@ -869,7 +914,7 @@ function processDecision(params){
 
   const reason =
     String(params.reason || "")
-      .substring(0,1000);
+      .substring(0, 1000);
 
   /*
   ==========================================================
@@ -881,20 +926,20 @@ function processDecision(params){
   Therefore nothing is added to QPG Hub.
   */
 
-  if(decision === "declined"){
+  if (decision === "declined") {
 
     sheet
-      .getRange(rowNumber,3)
+      .getRange(rowNumber, 3)
       .setValue("declined");
 
     sheet
-      .getRange(rowNumber,13)
+      .getRange(rowNumber, 13)
       .setValue(
         reason
       );
 
     sheet
-      .getRange(rowNumber,14)
+      .getRange(rowNumber, 14)
       .setValue(
         new Date().toISOString()
       );
@@ -907,8 +952,8 @@ function processDecision(params){
 
     return {
 
-      ok:true,
-      status:"declined"
+      ok: true,
+      status: "declined"
 
     };
 
@@ -922,22 +967,22 @@ function processDecision(params){
   Only here do we modify GitHub.
   */
 
-  try{
+  try {
 
     addGameToQPGHub(
       submission
     );
 
     sheet
-      .getRange(rowNumber,3)
+      .getRange(rowNumber, 3)
       .setValue("approved");
 
     sheet
-      .getRange(rowNumber,13)
+      .getRange(rowNumber, 13)
       .setValue("");
 
     sheet
-      .getRange(rowNumber,14)
+      .getRange(rowNumber, 14)
       .setValue(
         new Date().toISOString()
       );
@@ -950,12 +995,12 @@ function processDecision(params){
 
     return {
 
-      ok:true,
-      status:"approved"
+      ok: true,
+      status: "approved"
 
     };
 
-  }catch(error){
+  } catch (error) {
 
     console.error(error);
 
@@ -968,7 +1013,7 @@ function processDecision(params){
 
     return {
 
-      ok:false,
+      ok: false,
 
       error:
         "Approval failed before the submission was marked approved: " +
@@ -987,14 +1032,14 @@ ADD GAME TO QPG HUB
 ============================================================
 */
 
-function addGameToQPGHub(submission){
+function addGameToQPGHub(submission) {
 
   const token =
     PropertiesService
       .getScriptProperties()
       .getProperty("GITHUB_TOKEN");
 
-  if(!token){
+  if (!token) {
 
     throw new Error(
       "GitHub token is not configured."
@@ -1022,8 +1067,10 @@ function addGameToQPGHub(submission){
     UrlFetchApp.fetch(
       apiURL,
       {
-        method:"get",
-        headers:{
+        method: "get",
+
+        headers: {
+
           "Authorization":
             "Bearer " + token,
 
@@ -1032,9 +1079,10 @@ function addGameToQPGHub(submission){
 
           "X-GitHub-Api-Version":
             "2026-03-10"
+
         },
 
-        muteHttpExceptions:true
+        muteHttpExceptions: true
 
       }
     );
@@ -1042,7 +1090,7 @@ function addGameToQPGHub(submission){
   const getCode =
     getResponse.getResponseCode();
 
-  if(getCode !== 200){
+  if (getCode !== 200) {
 
     throw new Error(
       "GitHub could not read index.html. HTTP " +
@@ -1065,7 +1113,7 @@ function addGameToQPGHub(submission){
   const currentHTML =
     Utilities.newBlob(
       Utilities.base64Decode(
-        fileInfo.content.replace(/\s/g,"")
+        fileInfo.content.replace(/\s/g, "")
       )
     ).getDataAsString();
 
@@ -1078,11 +1126,11 @@ function addGameToQPGHub(submission){
     submission.id +
     '"';
 
-  if(
+  if (
     currentHTML.indexOf(
       duplicateMarker
     ) !== -1
-  ){
+  ) {
 
     throw new Error(
       "This submission already exists in QPG Hub."
@@ -1100,6 +1148,7 @@ function addGameToQPGHub(submission){
   */
 
   const card =
+
 `
 <a class="card"
    data-cat="${escapeAttribute(submission.gameCategory)}"
@@ -1160,7 +1209,7 @@ function addGameToQPGHub(submission){
       CONFIG.GAMES_MARKER
     );
 
-  if(markerIndex === -1){
+  if (markerIndex === -1) {
 
     throw new Error(
       'Could not find <div class="games"> in index.html. No changes were made.'
@@ -1207,9 +1256,9 @@ function addGameToQPGHub(submission){
       CONFIG.GITHUB_INDEX_PATH,
       {
 
-        method:"put",
+        method: "put",
 
-        headers:{
+        headers: {
 
           "Authorization":
             "Bearer " + token,
@@ -1241,7 +1290,7 @@ function addGameToQPGHub(submission){
             branch:
               CONFIG.GITHUB_BRANCH,
 
-            committer:{
+            committer: {
 
               name:
                 "QPG Game Submission Bot",
@@ -1253,7 +1302,7 @@ function addGameToQPGHub(submission){
 
           }),
 
-        muteHttpExceptions:true
+        muteHttpExceptions: true
 
       }
     );
@@ -1261,10 +1310,10 @@ function addGameToQPGHub(submission){
   const putCode =
     putResponse.getResponseCode();
 
-  if(
+  if (
     putCode !== 200 &&
     putCode !== 201
-  ){
+  ) {
 
     throw new Error(
       "GitHub rejected the update. HTTP " +
@@ -1288,12 +1337,12 @@ function sendDecisionEmail(
   submission,
   decision,
   reason
-){
+) {
 
   let subject;
   let body;
 
-  if(decision === "approved"){
+  if (decision === "approved") {
 
     subject =
       "🎉 Your game was approved — QPG Hub";
@@ -1328,7 +1377,7 @@ Thank you for submitting your game to QPG!
 — QPG Hub Team
 `;
 
-  }else{
+  } else {
 
     subject =
       "QPG Hub submission update";
@@ -1379,7 +1428,7 @@ HELPERS
 ============================================================
 */
 
-function getSheet(){
+function getSheet() {
 
   const id =
     PropertiesService
@@ -1388,7 +1437,7 @@ function getSheet(){
         "SPREADSHEET_ID"
       );
 
-  if(!id){
+  if (!id) {
 
     throw new Error(
       "Spreadsheet has not been created. Run setup()."
@@ -1404,7 +1453,7 @@ function getSheet(){
       CONFIG.SHEET_NAME
     );
 
-  if(!sheet){
+  if (!sheet) {
 
     sheet =
       ss.insertSheet(
@@ -1418,7 +1467,7 @@ function getSheet(){
 }
 
 
-function isAdmin(key){
+function isAdmin(key) {
 
   const stored =
     PropertiesService
@@ -1436,15 +1485,15 @@ function isAdmin(key){
 }
 
 
-function validateURL(value){
+function validateURL(value) {
 
   const url =
     new URL(value);
 
-  if(
+  if (
     url.protocol !== "https:" &&
     url.protocol !== "http:"
-  ){
+  ) {
 
     throw new Error(
       "Game link must use HTTP or HTTPS."
@@ -1455,18 +1504,18 @@ function validateURL(value){
 }
 
 
-function clean(value,max){
+function clean(value, max) {
 
   return String(
     value || ""
   )
-  .trim()
-  .substring(0,max);
+    .trim()
+    .substring(0, max);
 
 }
 
 
-function categoryName(category){
+function categoryName(category) {
 
   const names = {
 
@@ -1492,21 +1541,21 @@ function categoryName(category){
 }
 
 
-function escapeHTMLServer(value){
+function escapeHTMLServer(value) {
 
   return String(
     value || ""
   )
-  .replace(/&/g,"&amp;")
-  .replace(/</g,"&lt;")
-  .replace(/>/g,"&gt;")
-  .replace(/"/g,"&quot;")
-  .replace(/'/g,"&#039;");
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 
 }
 
 
-function escapeAttribute(value){
+function escapeAttribute(value) {
 
   return escapeHTMLServer(
     value
@@ -1515,7 +1564,7 @@ function escapeAttribute(value){
 }
 
 
-function output(obj){
+function output(obj) {
 
   return ContentService
     .createTextOutput(
@@ -1528,17 +1577,16 @@ function output(obj){
 }
 
 
-function jsonp(obj,callback){
+function jsonp(obj, callback) {
 
   /*
   Only allow simple JavaScript callback names.
   */
 
-  if(
+  if (
     !callback ||
-    !/^[A-Za-z_$][A-Za-z0-9_$]*$/
-      .test(callback)
-  ){
+    !/^[A-Za-z_$][A-Za-z0-9_$]*$/.test(callback)
+  ) {
 
     return output(obj);
 
